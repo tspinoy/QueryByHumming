@@ -1,4 +1,4 @@
 def longestCommonSubstring(query, goal):
-    return len(query)
+    return query + ", len = " + str(len(query))
 
-print(longestCommonSubstring("Hello World", "nyi"))
+#print(longestCommonSubstring("Hello World", "nyi"))
