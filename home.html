@@ -23,15 +23,27 @@
     <h2>Search for a sound you would like to download.</h2>
     <input type="text" name="search" placeholder="Search..." onclick="download()">
 
+    <div>
+        <p id="test"></p>
+    </div>
+
     <script>
         function add() {
             //alert("The function to add a sound has to be implemented.");
             $.get({
-                url: "match.py",
-                data: "/longestCommonSubstring(\"test\",\"lol\")",
-                //dataType: 'json',
-                success: function (data) {
-                    console.log("data" + data);
+                url: "/match.json",
+                //data: "query:myquestion, extraparam:lol",
+                dataType: 'json',
+                success: function (data, s, j) {
+                    $("#test").html(data.result.lol);
+                    console.log("data" + data.result.lol);
+
+                },
+                error: function(p, s, t){
+                    console.log("hier een fout");
+                    console.log("jqXHR = " + p);
+                    console.log("textStatus = " + s);
+                    console.log("errorThrown = " + t);
                 }
             });
         }

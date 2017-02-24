@@ -3,6 +3,7 @@ import os
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import cgi
 from os import curdir, sep
+import match
 
 PORT_NUMBER = 8080
 
@@ -13,6 +14,19 @@ class myHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/":
             self.path = "/home.html"
+
+        elif self.path == "/match.json":
+            self.send_response(200)
+
+            # Send headers
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+
+            # Send message back to client
+            message = match.match()
+            # Write content as utf-8 data
+            self.wfile.write(bytes(message))
+            return
 
         try:
             # Check the file extension required and
