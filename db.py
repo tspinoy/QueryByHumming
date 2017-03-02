@@ -1,9 +1,23 @@
 from pymongo import MongoClient
+import gridfs
+# Add the database
+client = MongoClient()
+db = client.qbh
+fs = gridfs.GridFS(db)
 
-client = MongoClient('localhost', 8080)
+f = fs.new_file()
+f.write("test")
+f.close()
 
-db = client.test_database
+print(fs.list())
+print(fs.find())
 
-test = db.dataset
-print db
-print test
+
+
+#test_collection = fs.test
+#print fs
+#x = []
+#t = fs.test.find()
+#for i in t:
+#    x.append(i)
+#print x
