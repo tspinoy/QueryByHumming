@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Query</title>
+    <link rel="stylesheet" type="text/css" href="general.css">
+</head>
+<body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <nav>
+        <h1>Upload a sound to search for results!</h1>
+    </nav>
+
+    <div>
+        <input type="file" accept=".wav,.mp3"><br>
+        <button type="button" onclick="search()">Search!</button>
+    </div>
+
+    <br><br>
+
+    <table id="results"></table>
+
+<script>
+    function add() {
+
+    }
+    function search() {
+        console.log("hello");
+        $.get({
+            url: "/match.json",
+            //data: "query:"aaabbbaaa", goal:"aaababaaa",
+            dataType: 'json',
+            success: function (data, s, j) {
+                $.each(data.results, function (index, result) {
+                    $("#results").append("<tr><td>" + (index + 1) + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
+                })
+            }
+        })
+    }
+</script>
+
+</body>
+</html>
