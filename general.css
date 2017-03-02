@@ -7,11 +7,27 @@ table{
     border: 2px solid black;
     border-collapse: collapse;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; /* De tabel past zich aan bij kleine schermen, en maakt zich niet extreem groot bij grote schermen. */
+    text-align: center;
 }
 
-td {
+td{
     height: 20px;
     padding: 10px;
     border: 1px solid black;
+}
+
+input{
+    align-content: center;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+}
+
+button{
+    align-items: center;
+}
+
+div{
+    text-align: center;
 }

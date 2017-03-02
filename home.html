@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Query By Humming</title>
+    <title>QbH Home</title>
     <link rel="stylesheet" type="text/css" href="general.css">
 </head>
 
@@ -14,14 +14,28 @@
         <h1>Query By Humming</h1>
     </nav>
 
-    <h2>Add a new sound to the database.</h2>
-    <button type="submit" onclick="add()">Add sound</button>
+    <br>
 
-    <h2>Search for a sound with your query.</h2>
-    <button type="submit" onclick="search()">Search</button>
-
-    <h2>Search for a sound you would like to download.</h2>
-    <input type="text" name="search" placeholder="Search..." onclick="download()">
+    <table>
+        <tr>
+            <td>
+                <h2>Add a new sound to the database.</h2>
+                <button type="submit" onclick="add()">Add sound</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Search for a sound with your query.</h2>
+                <button type="submit" onclick="gotoQueryPage()">Upload query and search!</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Search for a sound you would like to download.</h2>
+                <input type="text" name="search" placeholder="Search..." onclick="download()">
+            </td>
+        </tr>
+    </table>
 
     <div>
         <p id="test"></p>
@@ -35,8 +49,8 @@
                 //data: "query:"aaabbbaaa", goal:"aaababaaa",
                 dataType: 'json',
                 success: function (data, s, j) {
-                    $("#test").html(data.result.lol);
-                    console.log("data" + data.result.lol);
+                    $("#test").html(data.results[1].title);
+                    //console.log("data" + data.result.test);
 
                 },
                 error: function(p, s, t){
@@ -47,8 +61,8 @@
                 }
             });
         }
-        function search() {
-            alert("The function to search in the database has to be implemented.");
+        function gotoQueryPage() {
+            window.location.href = "query.html";
         }
         function download() {
             alert("The function to download a sound from the database has to be implemented.");
