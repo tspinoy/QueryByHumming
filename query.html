@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Query</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" sizes="16x16">
     <link rel="stylesheet" type="text/css" href="general.css">
 </head>
 <body>
@@ -12,7 +13,7 @@
     </nav>
 
     <div>
-        <input type="file" accept=".wav,.mp3"><br>
+        Upload your query here: <input id="inputfile" type="file" accept=".wav,.mp3"><br>
         <button type="button" onclick="search()">Search!</button>
     </div>
 
@@ -21,21 +22,41 @@
     <table id="results"></table>
 
 <script>
-    function add() {
+    var searched = false;
+    $(function(){
+        $("#inputfile").on("change" , function(){
+            var fileInput = document.getElementById("inputfile");
+            var fileList = fileInput.files;
+            if(fileList.length != 1){
+                alert("Please insert exactly one file!");
+                return false;
+            }
 
-    }
-    function search() {
-        console.log("hello");
-        $.get({
-            url: "/match.json",
-            //data: "query:"aaabbbaaa", goal:"aaababaaa",
-            dataType: 'json',
-            success: function (data, s, j) {
-                $.each(data.results, function (index, result) {
-                    $("#results").append("<tr><td>" + (index + 1) + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
-                })
+            var file = fileList[0];
+            console.log("fileInput = " + fileInput);
+            console.log("fileList = " + fileList);
+            console.log("file = " + fileList[0]);
+            console.log("filetype = " + file.type);
+            console.log("filetype indexof = " + (file.type.indexOf('.') + 1));
+
+            if(file.type.indexOf("mp3") < 0){
+                alert("Please choose a sound!");
             }
         })
+    });
+    function search() {
+        if(!searched) {
+            $.get({
+                url: "/match.json",
+                dataType: 'json',
+                success: function (data, s, j) {
+                    $.each(data.results, function (index, result) {
+                        $("#results").append("<tr><td>" + (index + 1) + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
+                    })
+                }
+            });
+            searched = true;
+        }
     }
 </script>
 
