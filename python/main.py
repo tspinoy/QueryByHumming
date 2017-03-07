@@ -1,7 +1,4 @@
-import webbrowser
-import os
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
-import cgi
 from os import curdir, sep
 import match
 

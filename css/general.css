@@ -21,10 +21,12 @@ input{
     align-content: center;
     text-align: center;
     vertical-align: middle;
-    margin: auto;
+
+    display: inline;
 }
 
 button{
+    display: inline;
     align-items: center;
 }
 
