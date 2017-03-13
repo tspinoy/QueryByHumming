@@ -12,7 +12,7 @@ class myHandler(BaseHTTPRequestHandler):
         if self.path == "/":
             self.path = "/home.html"
 
-        elif self.path == "/match.json":
+        if self.path == "/match.json":
             self.send_response(200)
 
             # Send headers
