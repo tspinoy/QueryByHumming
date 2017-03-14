@@ -1,12 +1,15 @@
-function add() {
+function added() {
     //alert("The function to add a sound has to be implemented.");
+    var file = document.getElementById("addNewSound").files[0].name;
+    console.log("file = " + file);
     $.get({
-        url: "/match.json",
+        url: "/dbFindByID.json",
         //data: "query:"aaabbbaaa", goal:"aaababaaa",
         dataType: 'json',
+        //data: file,
         success: function (data, s, j) {
-            $("#test").html(data.results[1].title);
-            //console.log("data" + data.result.test);
+            console.log(data);
+            $("#addFileSuccess").html("Your file is added!");
         },
         error: function(p, s, t){
             console.log("hier een fout");
@@ -16,7 +19,7 @@ function add() {
         }
     });
 }
-function gotoQueryPage() {
+function goToQueryPage() {
     window.location.href = "query.html";
 }
 function download() {
