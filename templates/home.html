@@ -22,13 +22,13 @@
         <tr>
             <td>
                 <h2>Add a new sound to the database.</h2>
-                <button type="submit" onclick="add()">Add sound</button>
+                <input id="addNewSound" type="file" onchange="added()">
             </td>
         </tr>
         <tr>
             <td>
                 <h2>Search for a sound with your query.</h2>
-                <button type="submit" onclick="gotoQueryPage()">Upload query and search!</button>
+                <button type="submit" onclick="goToQueryPage()">Upload query and search!</button>
             </td>
         </tr>
         <tr>
@@ -40,7 +40,7 @@
     </table>
 
     <div>
-        <p id="test"></p>
+        <p id="addFileSuccess"></p>
     </div>
 
 

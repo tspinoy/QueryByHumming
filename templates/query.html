@@ -9,13 +9,14 @@
 <body>
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="./js/query.js"></script>
+    <script src="./js/db.js"></script>
 
     <nav>
         <h1>Upload a sound to search for results!</h1>
     </nav>
 
     <div>
-        Upload your query here: <input id="inputfile" type="file" accept=".wav,.mp3"><br>
+        Upload your query here: <input id="inputFile" type="file" accept=".wav,.mp3" oninput="add()"><br>
         <button type="button" onclick="search()">Search!</button><br>
         <input type="button" value="Start" onclick="startRecordingAudio()" id="startRecordButton">
         <input type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
