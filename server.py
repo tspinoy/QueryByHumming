@@ -19,7 +19,7 @@ urls = (
     '/js/db.js', 'dbjs',
 
     # JSON requests
-    '/match.json', 'match',
+    '/match.json', 'matchjson',
     '/dbFindByFilename.json', 'dbFindByFilename',
     '/dbFindByArtist.json', 'dbFindByArtist',
     '/dbFindByID.json', 'dbFindByID',
@@ -31,7 +31,7 @@ render = web.template.render('templates/')
 # HTML classes
 class index:
     def GET(self):
-        return home.GET() # Send client immediately to home.html
+        return render.home() # Send client immediately to home.html
 
 class home:
     def GET(self):
@@ -68,25 +68,30 @@ class dbjs:
         return f.read()
 
 # JSON classes
-class match:
+class matchjson:
     def GET(self):
         return match.match()
 
 class dbAdd:
-    def GET(self, f): # f = file
-        return db.add(f)
+    def POST(self):
+        i = web.input()
+        db.add(i.get("uploadFile"))
+        return render.home()
 
 class dbFindByFilename:
-    def GET(self, filename):
+    def GET(self):
+        filename = web.input()
         return db.findByFilename(filename)
 
 class dbFindByArtist:
-    def GET(self, artist):
+    def GET(self):
+        artist = web.input()
         return db.findByArtist(artist)
 
-class dbFindByID:
-    def GET(self, id):
-        return db.findByID(id)
+class dFindByID:
+    def GET(self):
+        fileid = web.input()
+        return db.findByID(fileid)
 
 # Start the server
 if __name__ == "__main__":

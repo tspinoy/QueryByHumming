@@ -1,11 +1,11 @@
 from pymongo import MongoClient
 import gridfs
 
-db = {}
-fs = {}
+db, fs = 0, 0
 
 def connect_db():
     connection = MongoClient()
+    global db, fs
     db = connection.qbh
     fs = gridfs.GridFS(db)
 
@@ -37,8 +37,9 @@ def connect_db():
     print "gridfs: " + str(fs)
 
 def add(file):
+    print "try to add file"
+    fs.put(file)
     print "file added"
-    fs.put(open(file, 'r'))
 
 def findByFilename(filename):
     file = fs.find_one({"filename": filename})

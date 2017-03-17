@@ -7,11 +7,12 @@
     <title>QbH Home</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" sizes="16x16">
     <link rel="stylesheet" type="text/css" href="./css/general.css">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="./js/home.js"></script>
 </head>
 
 <body>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="./js/home.js"></script>
     <nav>
         <h1>Query By Humming</h1>
     </nav>
@@ -22,7 +23,11 @@
         <tr>
             <td>
                 <h2>Add a new sound to the database.</h2>
-                <input id="addNewSound" type="file" onchange="added()">
+                <form id="add-new-file-form" action="dbAdd.json" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="select-file-to-add" name="uploadFile" onclick="enableUploadButton()"> <!--the user can only select one file-->
+                    <button type="submit" id="upload-new-file-button" disabled>Upload</button>
+                </form>
+                <!--old <input id="addNewSound" type="file" onchange="added()"> -->
             </td>
         </tr>
         <tr>
@@ -34,7 +39,15 @@
         <tr>
             <td>
                 <h2>Search for a sound you would like to download.</h2>
-                <input type="text" name="search" placeholder="Search..." onclick="download()">
+                <form id="search-form">
+                    Search by:
+                    <!--Select one of the three possibilities-->
+                    <input type="radio" name="searchBy" value="title"> Title
+                    <input type="radio" name="searchBy" value="artist"> Artist
+                    <input type="radio" name="searchBy" value="id"> ID<br><br>
+                    <input type="text"  name="searchTerm" placeholder="Search ...">
+                    <button type="submit">Search!</button>
+                </form>
             </td>
         </tr>
     </table>

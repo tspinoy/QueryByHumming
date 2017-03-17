@@ -17,11 +17,8 @@ td{
     border: 1px solid black;
 }
 
-input{
-    align-content: center;
-    text-align: center;
-    vertical-align: middle;
-
+input[type="radio"]{
+    text-align: left;
     display: inline;
 }
 
