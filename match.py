@@ -1,24 +1,30 @@
+import json
+import unittest
+
+
 def longest_common_substring(query, goal):
-   m = [[0] * (1 + len(goal)) for i in range(1 + len(query))] # matrix with len(query) rows and len(goal) columns
-   longest_length = 0
-   x_longest_end_idx = 0
-   print m
-   for x in range(1, 1 + len(query)): # loop over all characters of the first string
-       for y in range(1, 1 + len(goal)): # loop over all characters of the second string
-           if query[x - 1] == goal[y - 1]:
-               m[x][y] = m[x - 1][y - 1] + 1
-               if m[x][y] > longest_length:
-                   longest_length = m[x][y]
-                   x_longest_end_idx = x
-           else:
-               m[x][y] = 0 # the elements are different: write a zero in the matrix
-   print m
-   lcs = query[x_longest_end_idx - longest_length: x_longest_end_idx]
-   result = "{\"algorithm\": \"longest common substring\"," \
-            " \"resultstring\": " + lcs + "," \
-            " \"length\": " + str(longest_length) + " }"
-   print result
-   return result # return the longest common substring
+    m = [[0] * (1 + len(goal)) for i in range(1 + len(query))] # matrix with len(query) rows and len(goal) columns
+    longest_length = 0
+    x_longest_end_idx = 0
+    print m
+    for x in range(1, 1 + len(query)): # loop over all characters of the first string
+        for y in range(1, 1 + len(goal)): # loop over all characters of the second string
+            if query[x - 1] == goal[y - 1]:
+                m[x][y] = m[x - 1][y - 1] + 1
+                if m[x][y] > longest_length:
+                    longest_length = m[x][y]
+                    x_longest_end_idx = x
+            else:
+                m[x][y] = 0 # the elements are different: write a zero in the matrix
+    print m
+    lcs = query[x_longest_end_idx - longest_length: x_longest_end_idx]
+    result = "{\"algorithm\": \"longest common substring\"," \
+             " \"resultstring\": " + lcs + "," \
+             " \"length\": " + str(longest_length) + " }"
+    print result
+    res = {'algorithm': "longest common substring", "resultString": lcs, 'length': longest_length}
+    return res # return the longest common substring
+
 
 # other method: longest common subsequence (tolerance)
 def lcss(X, Y):
@@ -34,6 +40,7 @@ def lcss(X, Y):
                 C[i][j] = max(C[i][j-1], C[i-1][j])
     return C
 
+
 def backTrack(C, X, Y, i, j):
     if i == 0 or j == 0:
         return ""
@@ -44,6 +51,7 @@ def backTrack(C, X, Y, i, j):
             return backTrack(C, X, Y, i, j-1)
         else:
             return backTrack(C, X, Y, i-1, j)
+
 
 def backTrackAll(C, X, Y, i, j):
     if i == 0 or j == 0:
@@ -58,13 +66,18 @@ def backTrackAll(C, X, Y, i, j):
             R.update(backTrackAll(C, X, Y, i-1, j))
         return R
 
-longest_common_substring("aaabbbaaa", "aaababaaa")
-print backTrack(lcss("aaabbbaaa", "aaababaaa"), "aaabbbaaa", "aaababaaa",len("aaabbbaaa"), len("aaababaaa"))
-
-#print json.dump(longestCommonSubstring("test", "lol"))
+#longest_common_substring("aaabbbaaa", "aaababaaa")
+#print backTrack(lcss("aaabbbaaa", "aaababaaa"), "aaabbbaaa", "aaababaaa",len("aaabbbaaa"), len("aaababaaa"))
 
 
 def match():
     return "{\"results\": [ {\"title\": \"Titel 1\", \"listen\": \"Listen 1\"}, {\"title\": \"Titel 2\", \"listen\": \"Listen 2\"}, {\"title\": \"Titel 3\", \"listen\": \"Listen 3\"}, {\"title\": \"Titel 4\", \"listen\": \"Listen 4\"}, {\"title\": \"Titel 5\", \"listen\": \"Listen 5\"}  ] }"
 
-#print(longestCommonSubstring("Hello World", "nyi"))
+
+class MatchTestCase(unittest.TestCase):
+    def test_longest_common_substring(self):
+        result = longest_common_substring("aaabbbaaa", "aaababaaa")
+        print result
+        self.assertEqual(result["length"], 4)
+        self.assertEqual(result["resultString"], "aaab")
+        self.assertEqual(result["algorithm"], "longest common substring")
