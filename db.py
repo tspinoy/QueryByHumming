@@ -3,17 +3,18 @@ import gridfs
 
 db, fs = 0, 0
 
+
 def connect_db():
     connection = MongoClient()
     global db, fs
     db = connection.qbh
     fs = gridfs.GridFS(db)
 
-    print(fs.list())
-    print(fs.find())
+    #print(fs.list())
+    #print(fs.find())
 
-    print db
-    print fs
+    #print db
+    #print fs
 
     # f = fs.new_file()
     # f.write("test")
@@ -33,22 +34,27 @@ def connect_db():
     #out = fs.get(fileID)
     #print out.length
 
-    print "db connected: " + str(db)
-    print "gridfs: " + str(fs)
+    print "db successfully connected: " + str(db)
+    #print "gridfs: " + str(fs)
+
 
 def add(file):
     print "try to add file"
-    fs.put(file)
+    kwargs = {"filename": "bestandsnaam"}
+    fs.put(file, **kwargs)
     print "file added"
 
+
 def findByFilename(filename):
-    file = fs.find_one({"filename": filename})
-    return file
+    f = fs.find_one({"filename": filename})
+    return f
+
 
 def findByID(id):
-    file = fs.find_one({"_id": id})
-    return file
+    f = fs.find_one({"_id": id})
+    return f
+
 
 def findByArtist(artist):
-    file = fs.find_one({"artist": artist})
-    return file
+    f = fs.find_one({"artist": artist})
+    return f
