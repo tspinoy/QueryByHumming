@@ -19,6 +19,11 @@ def load_file(music):
 
 
 def get_frequencies(music):
+    """
+    Retrieve the frequencies of a music file
+    :param music: a music file of any format
+    :return: an array with the frequencies of the audio in the file
+    """
     y, sr = load_file(music)
     frequencies = librosa.core.fft_frequencies(sr=sr, n_fft=5)
     print frequencies
@@ -31,8 +36,13 @@ def convert_frequencies_to_midi(frequencies_array):
 
 
 def convert_frequencies_to_notes(frequencies_array):
-    midi = librosa.core.hz_to_note(frequencies_array)
-    return midi
+    """
+    Retrieve the notes with given frequencies
+    :param frequencies_array: the frequencies of an audio file
+    :return: the notes corresponding to the frequencies
+    """
+    notes = librosa.core.hz_to_note(frequencies_array)
+    return notes
 
 
 def convert_music_to_midi(music):
@@ -40,6 +50,11 @@ def convert_music_to_midi(music):
 
 
 def get_pitches(music):
+    """
+    Retrieve the pitches from a music file
+    :param music: a music file of any format
+    :return: an array with the pitches
+    """
     y, sr = load_file(music)
     pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
     return pitches
@@ -101,6 +116,11 @@ print ioi(get_onset_times(librosa.util.example_audio_file()))
 
 
 class RepresentationTestCase(unittest.TestCase):
+    """
+    In this class we test the implementation of our methods to retrieve information from music files.
+    We check whether we retrieve the result we expect.
+    If not, we have to check the implementation to let this tests pass again!
+    """
     def test_ioi(self):
         self.assertTrue(np.all(ioi([1, 2, 4, 8])) == np.all([1, 2, 4]))
 
