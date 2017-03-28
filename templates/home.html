@@ -25,7 +25,7 @@
                 <h2>Add a new sound to the database.</h2>
                 <form id="add-new-file-form" action="dbAdd.json" method="POST" enctype="multipart/form-data">
                     <input type="file" id="select-file-to-add" name="uploadFile" onclick="enableUploadButton()"> <!--the user can only select one file-->
-                    <button type="submit" id="upload-new-file-button" disabled>Upload</button>
+                    <button type="submit" id="upload-new-file-button">Upload</button>
                 </form>
                 <!--old <input id="addNewSound" type="file" onchange="added()"> -->
             </td>
@@ -42,9 +42,9 @@
                 <form id="search-form">
                     Search by:
                     <!--Select one of the three possibilities-->
-                    <input type="radio" name="searchBy" value="title"> Title
-                    <input type="radio" name="searchBy" value="artist"> Artist
-                    <input type="radio" name="searchBy" value="id"> ID<br><br>
+                    <input type="radio" name="searchBy" value="title">Title
+                    <input type="radio" name="searchBy" value="artist">Artist
+                    <input type="radio" name="searchBy" value="id">ID<br><br>
                     <input type="text"  name="searchTerm" placeholder="Search ...">
                     <button type="submit">Search!</button>
                 </form>
@@ -55,7 +55,6 @@
     <div>
         <p id="addFileSuccess"></p>
     </div>
-
 
 </body>
 
