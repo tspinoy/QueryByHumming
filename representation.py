@@ -13,7 +13,7 @@ import numpy as np
 def load_file(music):
     """
     :param music: a music file of any format
-    :return: typle (y, sr) ; y = an array with the audio time series & sr = sample rate
+    :return: tuple (y, sr) ; y = an array with the audio time series & sr = sample rate
     """
     return librosa.load(music)
 
@@ -38,8 +38,17 @@ def convert_frequencies_to_notes(frequencies_array):
 def convert_music_to_midi(music):
     return convert_frequencies_to_midi(get_frequencies(music))
 
-print convert_music_to_midi(librosa.util.example_audio_file())
+
+def get_pitches(music):
+    y, sr = load_file(music)
+    pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
+    return pitches
+
+
+#print convert_music_to_midi(librosa.util.example_audio_file())
 #print convert_frequencies_to_notes(get_frequencies(librosa.util.example_audio_file()))
+#print librosa.cqt_frequencies(128, fmin=librosa.note_to_hz('C2'))
+#print get_pitches(librosa.util.example_audio_file())
 
 
 def get_onset_times(music):
@@ -48,7 +57,8 @@ def get_onset_times(music):
     :return: an array with the onset times.
     """
     y, sr = load_file(music)
-    onsets = librosa.onset.onset_detect(y=y, sr=sr)
+    onset_frames = librosa.onset.onset_detect(y=y, sr=sr)
+    onsets = librosa.frames_to_time(onset_frames, sr=sr)
     return onsets
 
 
@@ -77,20 +87,17 @@ def log_ioi(onsets_array):
 
     return res
 
-#print ioi(result)
-#print log_ioi(result)
 
-#pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
-#print pitches
-#print magnitudes
+def relative_pitch(pitch_array):
+    """
+    This function does exactly the same as ioi.
+    We compute the interval between every note and its successor.
+    :param pitch_array: an array with the pitches
+    :return: a new array with the pitch intervals computed by this function
+    """
+    return ioi(pitch_array)
 
-#print pitches[1]
-
-
-#print(log_ioi([1, 2, 4, 8]))
-#print np.log(1)
-#print np.log(8)
-#print np.log(10)
+print ioi(get_onset_times(librosa.util.example_audio_file()))
 
 
 class RepresentationTestCase(unittest.TestCase):
@@ -99,3 +106,6 @@ class RepresentationTestCase(unittest.TestCase):
 
     def test_log_ioi(self):
         self.assertTrue(np.all(log_ioi([1, 2, 4, 8])) == np.all([0, 1, 2]))
+
+    def test_relative_pitch(self):
+        self.assertTrue(np.all(relative_pitch([1, 2, 4, 8])) == np.all([1, 2, 4]))
