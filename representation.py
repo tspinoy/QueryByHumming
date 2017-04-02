@@ -1,80 +1,50 @@
-import unittest
-
-import librosa
+from mido import MidiFile
 import numpy as np
+import unittest
+import mido
 
-#y, sr = librosa.load(librosa.util.example_audio_file())
-#onset_frames = librosa.onset.onset_detect(y=y, sr=sr)
-#print onset_frames
-#result = librosa.frames_to_time(onset_frames[:20], sr=sr)
-#print result
+mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
+
+#print mid.filename
 
 
-def load_file(music):
+def get_messages(mid):
+    for i, track in enumerate(mid.tracks):
+        if track.name == "Vocal Guide":
+            track.sort(key=lambda message: message.time) # very important to sort!!!
+            return track
+
+result = get_messages(mid)
+for msg in result:
+    print(msg)
+
+
+def get_onsets(messages):
     """
-    :param music: a music file of any format
-    :return: tuple (y, sr) ; y = an array with the audio time series & sr = sample rate
+    From the messages we consider, we take all the messages of type note_on.
+    :param messages: all the messages from the Vocal Guide track.
+    :return: an array with only the messages with onset information.
     """
-    return librosa.load(music)
+    onsets_array = []
+    for msg in messages:
+        if msg.type == "note_on":
+            onsets_array.append(msg)
+    for onset in onsets_array:
+        onset.time = mido.tick2second(tick=onset.time, ticks_per_beat=mid.ticks_per_beat, tempo=64)
+    return onsets_array
 
 
-def get_frequencies(music):
+def get_pitches(messages):
     """
-    Retrieve the frequencies of a music file
-    :param music: a music file of any format
-    :return: an array with the frequencies of the audio in the file
+    From the messages we consider, we take all the messages of type pitch.
+    :param messages: all the messages from the Vocal Guide track.
+    :return: an array with only the messages with pitch information.
     """
-    y, sr = load_file(music)
-    frequencies = librosa.core.fft_frequencies(sr=sr, n_fft=5)
-    print frequencies
-    return frequencies
-
-
-def convert_frequencies_to_midi(frequencies_array):
-    midi = librosa.core.hz_to_midi(frequencies_array)
-    return midi
-
-
-def convert_frequencies_to_notes(frequencies_array):
-    """
-    Retrieve the notes with given frequencies
-    :param frequencies_array: the frequencies of an audio file
-    :return: the notes corresponding to the frequencies
-    """
-    notes = librosa.core.hz_to_note(frequencies_array)
-    return notes
-
-
-def convert_music_to_midi(music):
-    return convert_frequencies_to_midi(get_frequencies(music))
-
-
-def get_pitches(music):
-    """
-    Retrieve the pitches from a music file
-    :param music: a music file of any format
-    :return: an array with the pitches
-    """
-    y, sr = load_file(music)
-    pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
-    return pitches
-
-
-#print convert_music_to_midi(librosa.util.example_audio_file())
-#print convert_frequencies_to_notes(get_frequencies(librosa.util.example_audio_file()))
-#print librosa.cqt_frequencies(128, fmin=librosa.note_to_hz('C2'))
-#print get_pitches(librosa.util.example_audio_file())
-
-
-def get_onset_times(music):
-    """
-    :param music: a music file.
-    :return: an array with the onset times.
-    """
-    y, sr = load_file(music)
-    onset_frames = librosa.onset.onset_detect(y=y, sr=sr)
-    onsets = librosa.frames_to_time(onset_frames, sr=sr)
-    return onsets
+    pitches_array = []
+    for msg in messages:
+        if msg.type == "pitchwheel":
+            pitches_array.append(msg)
+    return pitches_array
 
 
 def ioi(onsets_array):
@@ -83,23 +53,8 @@ def ioi(onsets_array):
     :return: a new array with the onset intervals computed by this function.
     """
     res = np.zeros(len(onsets_array)-1)
-
-    for i in range(len(onsets_array)):
-        res[i-1] = onsets_array[i] - onsets_array[i-1]
-
-    return res
-
-
-def log_ioi(onsets_array):
-    """
-    :param onsets_array: an array with the onset times.
-    :return: a new array with the logarithm of the onset intervals computed by this function.
-    """
-    res = np.zeros(len(onsets_array)-1)
-
-    for i in range(len(onsets_array)):
-        res[i-1] = np.log2(onsets_array[i] - onsets_array[i-1])
-
+    for index in range(len(onsets_array)):
+        res[index-1] = onsets_array[index].time - onsets_array[index-1].time
     return res
 
 
@@ -110,9 +65,59 @@ def relative_pitch(pitch_array):
     :param pitch_array: an array with the pitches
     :return: a new array with the pitch intervals computed by this function
     """
-    return ioi(pitch_array)
+    res = np.zeros(len(pitch_array) - 1)
+    for index in range(len(pitch_array)):
+        res[index - 1] = pitch_array[index].pitch - pitch_array[index - 1].pitch
+    return res
 
-print ioi(get_onset_times(librosa.util.example_audio_file()))
+
+def relative_note(note_array):
+    """
+    This function does exactly the same as ioi.
+    We compute the interval between every note and its successor.
+    :param note_array: an array with the pitches
+    :return: a new array with the note intervals computed by this function
+    """
+    res = np.zeros(len(note_array) - 1)
+    for index in range(len(note_array)):
+        res[index - 1] = note_array[index].note - note_array[index - 1].note
+    return res
+
+onsets = get_onsets(result)
+pitches = get_pitches(result)
+print onsets
+print pitches
+print ioi(onsets)
+print relative_pitch(pitches)
+print relative_note(onsets)
+
+
+#for i, track in enumerate(mid.tracks):
+#    print('Track {}: {}'.format(i, track.name))
+
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+    # !!!!!!!!!!!! DO NOT REMOVE !!!!!!!!!!!!!!! #
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+    #track.sort(key=lambda message: message.time) # Sort the information on time: very important
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+    # !!!!!!!!!!!! DO NOT REMOVE !!!!!!!!!!!!!!! #
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+
+#    print track
+    # for msg in track:
+    #    print(msg)
+
+
+def midifile_to_dict(mid):
+    tracks = []
+    for track in mid.tracks:
+        tracks.append([vars(msg).copy() for msg in track])
+
+    return {
+        'ticks_per_beat': mid.ticks_per_beat,
+        'tracks': tracks,
+    }
+#print midifile_to_dict(mid)
 
 
 class RepresentationTestCase(unittest.TestCase):
@@ -124,8 +129,8 @@ class RepresentationTestCase(unittest.TestCase):
     def test_ioi(self):
         self.assertTrue(np.all(ioi([1, 2, 4, 8])) == np.all([1, 2, 4]))
 
-    def test_log_ioi(self):
-        self.assertTrue(np.all(log_ioi([1, 2, 4, 8])) == np.all([0, 1, 2]))
+    #def test_log_ioi(self):
+    #    self.assertTrue(np.all(log_ioi([1, 2, 4, 8])) == np.all([0, 1, 2]))
 
     def test_relative_pitch(self):
         self.assertTrue(np.all(relative_pitch([1, 2, 4, 8])) == np.all([1, 2, 4]))
