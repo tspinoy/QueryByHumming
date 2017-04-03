@@ -1,14 +1,11 @@
 // http://blog.teamtreehouse.com/uploading-files-ajax
 
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * ------------------------------------------------- Add a new file ------------------------------------------------- *
+ * ------------------------------------------------------------------------------------------------------------------ */
 var addNewFileForm = document.getElementById("add-new-file-form");
 var fileSelect = document.getElementById("select-file-to-add");
 var uploadButton = document.getElementById("upload-new-file-button");
-
-var searchForm = document.getElementById("search-form");
-
-function enableUploadButton(){
-    uploadButton.disabled = false;
-}
 
 addNewFileForm.onsubmit = function(event) {
   event.preventDefault();
@@ -22,7 +19,7 @@ addNewFileForm.onsubmit = function(event) {
   // Create a new FormData object.
   var formData = new FormData();
 
-  // Loop through each of the selected files. (for in case you decide to allow the user to select multiple files at once.
+  // Loop through each of the selected files. (for in case you decide to allow the user to select multiple files at once)
   for (var i = 0; i < files.length; i++) {
       var file = files[i];
 
@@ -32,7 +29,8 @@ addNewFileForm.onsubmit = function(event) {
       }
 
       // Add the file to the request.
-      formData.append('uploadFile', file, filename);
+      console.log(file.name);
+      formData.append('uploadFile', file, file.name);
   }
 
   // Set up the request.
@@ -56,10 +54,17 @@ addNewFileForm.onsubmit = function(event) {
   xhr.send(formData);
 };
 
-searchForm.onsubmit = function(event){
-    var radioresult = {};
-};
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * ---------------------------------------------------- Redirect ---------------------------------------------------- *
+ * ------------------------------------------------------------------------------------------------------------------ */
 
+function goToQueryPage() {
+    window.location.href = "query.html";
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ *
+ * ------------------------------------------------------ Other ----------------------------------------------------- *
+ * ------------------------------------------------------------------------------------------------------------------ */
 
 function added() {
     //alert("The function to add a sound has to be implemented.");
@@ -82,9 +87,16 @@ function added() {
         }
     });
 }
-function goToQueryPage() {
-    window.location.href = "query.html";
+
+var searchForm = document.getElementById("search-form");
+searchForm.onsubmit = function(event){
+    var radioresult = {};
+};
+
+function enableUploadButton(){
+    uploadButton.disabled = false;
 }
+
 function download() {
     alert("The function to download a sound from the database has to be implemented.");
 }

@@ -3,10 +3,14 @@ import web
 import match
 import db
 
+# -------------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------------- URLs ------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
+
 urls = (
     # HTML files
     '/', 'index',
-    '/home.html', 'home',
+    '/home.*', 'home',
     '/query.html', 'query',
     '/content.html', 'content',
 
@@ -28,72 +32,104 @@ urls = (
 
 render = web.template.render('templates/')
 
-# HTML classes
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------- HTML classes --------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
 class index:
     def GET(self):
         return render.home() # Send client immediately to home.html
 
+
 class home:
     def GET(self):
-        return render.home()
+        return render.home("test")
+
 
 class query:
     def GET(self):
         return render.query()
 
+
 class content:
     def GET(self):
         return render.content()
 
-# CSS classes
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------- CSS classes ---------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
 class generalcss:
     def GET(self):
         f = open("templates/css/general.css")
         return f.read()
 
-# JavaScript classes
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------ JavaScript classes ------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
 class homejs:
     def GET(self):
         f = open("templates/js/home.js")
         return f.read()
+
 
 class queryjs:
     def GET(self):
         f = open("templates/js/query.js")
         return f.read()
 
+
 class dbjs:
     def GET(self):
         f = open("templates/js/db.js")
         return f.read()
 
-# JSON classes
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------- JSON classes --------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
 class matchjson:
     def GET(self):
         return match.match()
 
+
 class dbAdd:
     def POST(self):
-        i = web.input()
-        db.add(i.get("uploadFile"))
+        storage = web.input()
+        #print storage.get("uploadFile")
+        print storage.items()
+        print storage.values()
+        print storage.viewitems()
+        print storage.viewvalues()
+        #db.add(storage.get("uploadFile"))
         return render.home()
 
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- Database classes ------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
 class dbFindByFilename:
     def GET(self):
         filename = web.input()
         return db.findByFilename(filename)
+
 
 class dbFindByArtist:
     def GET(self):
         artist = web.input()
         return db.findByArtist(artist)
 
+
 class dFindByID:
     def GET(self):
         fileid = web.input()
         return db.findByID(fileid)
 
-# Start the server
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- Start the server ------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
 if __name__ == "__main__":
     app = web.application(urls, globals())
     db.connect_db()
