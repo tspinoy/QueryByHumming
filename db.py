@@ -1,5 +1,7 @@
 from pymongo import MongoClient
 import gridfs
+import representation
+import match
 
 db, fs = 0, 0
 
@@ -44,23 +46,36 @@ def connect_db():
 # -------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- Add & get ----------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-def add(file):
-    print "try to add file"
-    kwargs = {"filename": "bestandsnaam"}
-    fs.put(file, **kwargs)
-    print "file added"
+def add(midi_file, filename):
+    kwargs = {"filename": filename}
+    fs.put(midi_file, **kwargs)
 
 
-def findByFilename(filename):
+def find_by_filename(filename):
     f = fs.find_one({"filename": filename})
     return f
 
 
-def findByID(id):
-    f = fs.find_one({"_id": id})
+def find_by_id(file_id):
+    f = fs.find_one({"_id": file_id})
     return f
 
 
-def findByArtist(artist):
+def find_by_artist(artist):
     f = fs.find_one({"artist": artist})
     return f
+
+
+def find_by_query(midi_file):
+    print "hello"
+    print fs.find()
+    relevant_messages = representation.get_onset_and_note_messages(midi_file=midi_file)
+    ioi = representation.ioi(messages_array=relevant_messages)
+    rel_notes = representation.relative_note(messages_array=relevant_messages)
+    print fs.find()
+    for d in fs.find():
+        iois = match.lcs(ioi, representation.ioi(representation.get_onset_and_note_messages(d)))
+        notes = match.lcs(rel_notes, representation.relative_note(representation.get_onset_and_note_messages(d)))
+        print "ioi   = " + str(iois)
+        print "notes = " + str(notes)
+    return 0
