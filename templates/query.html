@@ -15,19 +15,36 @@
 <!--------------------------------------------------- Navigation bar -------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
     <nav>
-        <h1>Upload a sound to search for results!</h1>
+        <ul>
+            <li><a href="home.html">Query by Humming</a></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a class="active" href="query.html">Query</a></li>
+            <li><a href="content.html">Content</a></li>
+        </ul>
     </nav>
-
-    <div>
-        Upload your query here: <input id="inputFile" type="file" accept=".wav,.mp3" oninput="add()"><br>
-        <button type="button" onclick="search()">Search!</button><br>
+    <br>
+<!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------- Content ----------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->
+    <div class="skip-navbar">
+        <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
+            Upload your query here: <input id="select-query" type="file" accept=".mid"><br>
+            <button id="upload-query-button" type="submit">Search!</button><br>
+        </form>
         <input type="button" value="Start" onclick="startRecordingAudio()" id="startRecordButton">
         <input type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
     </div>
 
-    <br><br>
+    <br>
+    <br>
 
     <table id="results"></table>
 
+<!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------- Footer ------------------------------------------------------>
+<!--------------------------------------------------------------------------------------------------------------------->
+    <nav class="down">
+        Query by Humming © Thijs Spinoy
+    </nav>
 </body>
 </html>

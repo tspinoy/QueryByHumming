@@ -17,54 +17,63 @@
 <!--------------------------------------------------- Navigation bar -------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
     <nav>
-        <h1>Query By Humming</h1>
+        <ul>
+            <li><a href="home.html">Query by Humming</a></li>
+            <li><a class="active" href="home.html">Home</a></li>
+            <li><a href="query.html">Query</a></li>
+            <li><a href="content.html">Content</a></li>
+        </ul>
     </nav>
-
+    <br>
+<!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------- Content ----------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->
+    <div class="skip-navbar">
+        <table>
+            <tr>
+                <td>
+                    <h2>Add a new sound to the database.</h2>
+                    <form id="add-new-file-form" action="dbAdd.json" method="POST" enctype="multipart/form-data">
+                        <input type="file" id="select-file-to-add" name="uploadFile" onclick="enableUploadButton()"> <!--the user can only select one file-->
+                        <button type="submit" id="upload-new-file-button">Upload</button>
+                    </form>
+                    <!--old <input id="addNewSound" type="file" onchange="added()"> -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Search for a sound with your query.</h2>
+                    <button type="submit" onclick="goToQueryPage()">Upload query and search!</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Search for a sound you would like to download.</h2>
+                    <form id="search-form">
+                        Search by:
+                        <!--Select one of the three possibilities-->
+                        <input type="radio" name="searchBy" value="title">Title
+                        <input type="radio" name="searchBy" value="artist">Artist
+                        <input type="radio" name="searchBy" value="id">ID<br><br>
+                        <input type="text"  name="searchTerm" placeholder="Search ...">
+                        <button type="submit">Search!</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
     <br>
 
-<!--------------------------------------------------------------------------------------------------------------------->
-<!---------------------------------------- Table with application possibilities --------------------------------------->
-<!--------------------------------------------------------------------------------------------------------------------->
-    <table>
-        <tr>
-            <td>
-                <h2>Add a new sound to the database.</h2>
-                <form id="add-new-file-form" action="dbAdd.json" method="POST" enctype="multipart/form-data">
-                    <input type="file" id="select-file-to-add" name="uploadFile" onclick="enableUploadButton()"> <!--the user can only select one file-->
-                    <button type="submit" id="upload-new-file-button">Upload</button>
-                </form>
-                <!--old <input id="addNewSound" type="file" onchange="added()"> -->
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Search for a sound with your query.</h2>
-                <button type="submit" onclick="goToQueryPage()">Upload query and search!</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Search for a sound you would like to download.</h2>
-                <form id="search-form">
-                    Search by:
-                    <!--Select one of the three possibilities-->
-                    <input type="radio" name="searchBy" value="title">Title
-                    <input type="radio" name="searchBy" value="artist">Artist
-                    <input type="radio" name="searchBy" value="id">ID<br><br>
-                    <input type="text"  name="searchTerm" placeholder="Search ...">
-                    <button type="submit">Search!</button>
-                </form>
-            </td>
-        </tr>
-    </table>
-
-<!--------------------------------------------------------------------------------------------------------------------->
-<!------------------------------------------------- Information space ------------------------------------------------->
-<!--------------------------------------------------------------------------------------------------------------------->
     <div>
         <p id="addFileSuccess"></p>
     </div>
 
+<!--------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------- Footer ------------------------------------------------------>
+<!--------------------------------------------------------------------------------------------------------------------->
+    <nav class="down">
+        Query by Humming © Thijs Spinoy
+    </nav>
 </body>
 
 </html>
