@@ -9,25 +9,28 @@ import db
 
 urls = (
     # HTML files
-    '/', 'index',
-    '/home.*', 'home',
-    '/query.html', 'query',
-    '/content.html', 'content',
+    '/', 'Index',
+    '/home.html', 'Home',
+    '/query.html', 'Query',
+    '/content.html', 'Content',
 
     # CSS files
-    '/css/general.css', 'generalcss',
+    '/css/general.css', 'GeneralCSS',
 
     # JavaScript files
-    '/js/home.js', 'homejs',
-    '/js/query.js', 'queryjs',
-    '/js/db.js', 'dbjs',
+    '/js/home.js', 'HomeJS',
+    '/js/query.js', 'QueryJS',
+    '/js/db.js', 'DBJS',
 
     # JSON requests
-    '/match.json', 'matchjson',
-    '/dbFindByFilename.json', 'dbFindByFilename',
-    '/dbFindByArtist.json', 'dbFindByArtist',
-    '/dbFindByID.json', 'dbFindByID',
-    '/dbAdd.json', 'dbAdd'
+    '/match.json', 'MatchJSON',
+
+    # Database classes
+    '/dbFindByFilename.json', 'DBFindByFilename',
+    '/dbFindByArtist.json', 'DBFindByArtist',
+    '/dbFindByID.json', 'DBFindByID',
+    '/dbFindByQuery.json', 'DBFindByQuery',
+    '/dbAdd.json', 'DBAdd'
 )
 
 render = web.template.render('templates/')
@@ -36,22 +39,22 @@ render = web.template.render('templates/')
 # -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- HTML classes --------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class index:
+class Index:
     def GET(self):
-        return render.home() # Send client immediately to home.html
+        return render.home()  # Send client immediately to home.html
 
 
-class home:
+class Home:
     def GET(self):
-        return render.home("test")
+        return render.home()
 
 
-class query:
+class Query:
     def GET(self):
         return render.query()
 
 
-class content:
+class Content:
     def GET(self):
         return render.content()
 
@@ -59,7 +62,7 @@ class content:
 # -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- CSS classes ---------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class generalcss:
+class GeneralCSS:
     def GET(self):
         f = open("templates/css/general.css")
         return f.read()
@@ -68,19 +71,19 @@ class generalcss:
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------ JavaScript classes ------------------------------------------------ #
 # -------------------------------------------------------------------------------------------------------------------- #
-class homejs:
+class HomeJS:
     def GET(self):
         f = open("templates/js/home.js")
         return f.read()
 
 
-class queryjs:
+class QueryJS:
     def GET(self):
         f = open("templates/js/query.js")
         return f.read()
 
 
-class dbjs:
+class DBJS:
     def GET(self):
         f = open("templates/js/db.js")
         return f.read()
@@ -89,42 +92,53 @@ class dbjs:
 # -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- JSON classes --------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class matchjson:
+class MatchJSON:
     def GET(self):
         return match.match()
-
-
-class dbAdd:
-    def POST(self):
-        storage = web.input()
-        #print storage.get("uploadFile")
-        print storage.items()
-        print storage.values()
-        print storage.viewitems()
-        print storage.viewvalues()
-        #db.add(storage.get("uploadFile"))
-        return render.home()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- Database classes ------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class dbFindByFilename:
+class DBAdd:
+    def POST(self):
+        storage = web.input(uploadFile={})
+        filename = storage['uploadFile'].filename    # This is the filename
+        content = storage['uploadFile'].file.read()  # This is the content of the file
+        db.add(midi_file=content, filename=filename)
+        return render.home()
+
+
+class DBFindByFilename:
     def GET(self):
         filename = web.input()
-        return db.findByFilename(filename)
+        return db.find_by_filename(filename=filename)
 
 
-class dbFindByArtist:
+class DBFindByArtist:
     def GET(self):
         artist = web.input()
-        return db.findByArtist(artist)
+        return db.find_by_artist(artist=artist)
 
 
-class dFindByID:
+class DBFindByID:
     def GET(self):
         fileid = web.input()
-        return db.findByID(fileid)
+        return db.find_by_id(file_id=fileid)
+
+
+class DBFindByQuery:
+    def POST(self):
+        storage = web.input(queryFile={})
+        print storage
+        filename = storage['queryFile'].filename    # This is the filename
+        content = storage['queryFile'].file.read()  # This is the content of the file
+        print filename
+        print content
+        #query = storage.get("queryFile")
+        #print str(query)
+        #print db.find_by_query(midi_file=content)
+        return render.query()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
