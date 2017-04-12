@@ -2,6 +2,8 @@ import web
 
 import match
 import db
+import representation
+from mido import MidiFile
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------------- URLs ------------------------------------------------------- #
@@ -105,7 +107,9 @@ class DBAdd:
         storage = web.input(uploadFile={})
         filename = storage['uploadFile'].filename    # This is the filename
         content = storage['uploadFile'].file.read()  # This is the content of the file
-        db.add(midi_file=content, filename=filename)
+        #print MidiFile(storage)
+        print MidiFile(content)
+        #db.add(midi_file=content, filename=filename)
         return render.home()
 
 
@@ -133,11 +137,11 @@ class DBFindByQuery:
         print storage
         filename = storage['queryFile'].filename    # This is the filename
         content = storage['queryFile'].file.read()  # This is the content of the file
-        print filename
-        print content
-        #query = storage.get("queryFile")
-        #print str(query)
-        #print db.find_by_query(midi_file=content)
+        #print storage["queryFile"].filename
+        value =  storage["queryFile"].value
+        #print content
+        #print storage["queryFile"]
+        #print db.find_by_query(midi_file=storage['queryFile'])
         return render.query()
 
 

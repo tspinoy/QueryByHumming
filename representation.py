@@ -4,6 +4,7 @@ import unittest
 import mido
 
 mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
+print mid
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -11,8 +12,7 @@ mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
 # -------------------------------------------------------------------------------------------------------------------- #
 def get_messages(midi_file):
     """
-    We only consider messages from the track Vocal Guide
-    because this is the track where people's voice is stored.
+    We only consider messages from the track Vocal Guide because this is the track where people's voice is stored.
     :param midi_file: a loaded midi-file.
     :return: a sorted list of messages from the Vocal Guide.
     """
