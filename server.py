@@ -2,7 +2,6 @@ import web
 
 import match
 import db
-import representation
 from mido import MidiFile
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -105,11 +104,17 @@ class MatchJSON:
 class DBAdd:
     def POST(self):
         storage = web.input(uploadFile={})
-        filename = storage['uploadFile'].filename    # This is the filename
-        content = storage['uploadFile'].file.read()  # This is the content of the file
-        #print MidiFile(storage)
-        print MidiFile(content)
-        #db.add(midi_file=content, filename=filename)
+        filename = storage.uploadFile.filename    # The filename.
+        content = storage.uploadFile.file.read()  # The content of the file.
+
+        # Put the content in a temporary file
+        # because "MidiFile()" expects a path to a file.
+        path = "templates/midi/" + filename
+        temp = open(path, "r+")
+        temp.write(content)
+        midi = MidiFile(path)
+        db.add(midi_file=midi, filename=filename)
+        # db.find_by_query(midi_file=midifile)
         return render.home()
 
 
@@ -135,13 +140,16 @@ class DBFindByQuery:
     def POST(self):
         storage = web.input(queryFile={})
         print storage
-        filename = storage['queryFile'].filename    # This is the filename
-        content = storage['queryFile'].file.read()  # This is the content of the file
-        #print storage["queryFile"].filename
-        value =  storage["queryFile"].value
-        #print content
-        #print storage["queryFile"]
-        #print db.find_by_query(midi_file=storage['queryFile'])
+        filename = storage.queryFile.filename    # The filename
+        content = storage.queryFile.file.read()  # The content of the file
+
+        # Put the content of the query in a temporary file
+        # because "MidiFile()" expects a path to a file.
+        path = "templates/midi/" + filename
+        temp = open(path, "r+")
+        temp.write(content)
+        midi = MidiFile(path)
+        db.find_by_query(midi_file=midi)
         return render.query()
 
 

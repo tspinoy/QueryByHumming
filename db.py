@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import gridfs
 import representation
-import match
 
 db, fs = 0, 0
 
@@ -67,15 +66,17 @@ def find_by_artist(artist):
 
 
 def find_by_query(midi_file):
-    print "hello"
-    print fs.find()
+    #print fs.find()
     relevant_messages = representation.get_onset_and_note_messages(midi_file=midi_file)
+    print relevant_messages
     ioi = representation.ioi(messages_array=relevant_messages)
+    print ioi
     rel_notes = representation.relative_note(messages_array=relevant_messages)
-    print fs.find()
-    for d in fs.find():
-        iois = match.lcs(ioi, representation.ioi(representation.get_onset_and_note_messages(d)))
-        notes = match.lcs(rel_notes, representation.relative_note(representation.get_onset_and_note_messages(d)))
-        print "ioi   = " + str(iois)
-        print "notes = " + str(notes)
-    return 0
+    print rel_notes
+    #print fs.find()
+    #for d in fs.find():
+    #    iois = match.lcs(ioi, representation.ioi(representation.get_onset_and_note_messages(d)))
+    #    notes = match.lcs(rel_notes, representation.relative_note(representation.get_onset_and_note_messages(d)))
+    #    print "ioi   = " + str(iois)
+    #    print "notes = " + str(notes)
+    #return 0
