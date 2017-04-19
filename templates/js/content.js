@@ -1,4 +1,16 @@
 var filledContentTable = false;
+var indexColumn = 0;
+var titleColumn = 1;
+var reversed = false;
+
+var comparators = {
+    "reversed" : function (operand1, operand2) {
+        return operand1 < operand2;
+    },
+    "not reversed" : function (operand1, operand2) {
+        return operand1 > operand2;
+    }
+};
 
 function fillContentTable() {
     if(!filledContentTable) {
@@ -15,4 +27,59 @@ function fillContentTable() {
         filledContentTable = true; // otherwise you can keep adding the same information
     }
     $("#loadingInformation").html("All content is loaded.");
+}
+
+// https://www.w3schools.com/howto/howto_js_sort_table.asp
+function sortContentTable(column, comparator) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("contentTable");
+  switching = true;
+  // Make a loop that will continue until no switching has been done
+  while (switching) {
+    // Start by saying: no switching is done
+    switching = false;
+    rows = table.getElementsByTagName("tr");
+    // Loop through all table rows
+    // If there are table headers, skip them by setting i to 1
+    for (i = 0; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching
+      shouldSwitch = false;
+      // Get the two elements you want to compare, one from current row and one from the next
+      x = rows[i].getElementsByTagName("td")[column];
+      y = rows[i + 1].getElementsByTagName("td")[column];
+      // Check if the two rows should switch place
+      if (column === indexColumn) {
+        if (comparator(x.innerHTML, y.innerHTML)) {
+        // If so, mark as a switch and break the loop
+        shouldSwitch = true;
+        break;
+        }
+      }
+      else if (comparator(x.innerHTML.toLowerCase(), y.innerHTML.toLowerCase())) {
+        // If so, mark as a switch and break the loop
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      // If a switch has been marked, make the switch and mark that a switch has been done
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+  reversed = !reversed; // Set the boolean to know the table is now sorted in the other order
+}
+
+function sortContentTableByIndex() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortContentTable(indexColumn, comparators["not reversed"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortContentTable(indexColumn, comparators["reversed"])
+
+}
+
+function sortContentTableByTitle() {
+    sortContentTable(titleColumn)
 }
