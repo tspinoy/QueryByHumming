@@ -18,7 +18,7 @@ nav.top{
     width: 100%;
 }
 
-nav.down{
+nav.bottom{
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -71,7 +71,6 @@ table{
     margin-right: auto;
     text-align: center;
     vertical-align: middle;
-    top: 20%;
     position: relative;
 
 }

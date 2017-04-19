@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>QbH Home</title>
+    <title>QbH | Home</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" sizes="16x16">
     <link rel="stylesheet" type="text/css" href="./css/general.css">
 
@@ -25,6 +25,8 @@
         </ul>
     </nav>
     <br>
+    <br>
+    <br>
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Content ----------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -34,7 +36,7 @@
                 <td>
                     <h2>Add a new sound to the database.</h2>
                     <form id="add-new-file-form" action="dbAdd.json" method="POST" enctype="multipart/form-data">
-                        <input type="file" id="select-file-to-add" name="uploadFile" onclick="enableUploadButton()"> <!--the user can only select one file-->
+                        <input type="file" id="select-file-to-add" name="uploadFile"> <!--the user can only select one file-->
                         <button type="submit" id="upload-new-file-button">Upload</button>
                     </form>
                     <!--old <input id="addNewSound" type="file" onchange="added()"> -->
@@ -71,7 +73,7 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Footer ------------------------------------------------------>
 <!--------------------------------------------------------------------------------------------------------------------->
-    <nav class="down">
+    <nav class="bottom">
         Query by Humming © Thijs Spinoy
     </nav>
 </body>

@@ -29,8 +29,8 @@ addNewFileForm.onsubmit = function(event) {
       }
 
       // Add the file to the request.
-      console.log(file.name);
-      formData.append('uploadFile', file, file.name);
+      console.log(filename);
+      formData.append('uploadFile', file, filename);
   }
 
   // Set up the request.

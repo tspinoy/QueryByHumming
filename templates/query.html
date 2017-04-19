@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Query</title>
+    <title>QbH | Query</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" sizes="16x16">
     <link rel="stylesheet" type="text/css" href="./css/general.css">
 
@@ -28,10 +28,10 @@
 <!--------------------------------------------------------------------------------------------------------------------->
     <div class="skip-navbar">
         <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
-            Upload your query here: <input id="select-query" type="file" accept=".mid"><br>
+            Upload your query here: <input id="select-query" type="file" name="queryFile" accept=".mid"><br>
             <button id="upload-query-button" type="submit">Search!</button><br>
         </form>
-        <input type="button" value="Start" onclick="startRecordingAudio()" id="startRecordButton">
+        <input type="button" value="Start" onclick="search()" id="startRecordButton">
         <input type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
     </div>
 
@@ -43,7 +43,7 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Footer ------------------------------------------------------>
 <!--------------------------------------------------------------------------------------------------------------------->
-    <nav class="down">
+    <nav class="bottom">
         Query by Humming © Thijs Spinoy
     </nav>
 </body>

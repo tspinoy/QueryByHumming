@@ -4,7 +4,10 @@ import unittest
 import mido
 
 mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
-print mid
+# print mid
+# for i, track in enumerate(mid.tracks):
+#    for msg in track:
+#        print(msg)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -21,9 +24,9 @@ def get_messages(midi_file):
             track.sort(key=lambda message: message.time) # very important to sort!!!
             return track
 
-#result = get_messages(mid)
-#for msg in result:
-#    print(msg)
+# result = get_messages(mid)
+# for msg in result:
+#     print(msg)
 
 
 def get_onset_and_note_messages(midi_file):
