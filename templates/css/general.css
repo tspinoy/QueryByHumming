@@ -75,6 +75,14 @@ table{
 
 }
 
+th{
+    height: 20px;
+    padding: 10px;
+    border: 1px solid #333;
+    background-color: lightyellow;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 td{
     height: 20px;
     padding: 10px;
