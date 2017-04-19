@@ -22,9 +22,11 @@ urls = (
     '/js/home.js', 'HomeJS',
     '/js/query.js', 'QueryJS',
     '/js/db.js', 'DBJS',
+    '/js/content.js', 'ContentJS',
 
     # JSON requests
     '/match.json', 'MatchJSON',
+    '/content.json', 'ContentJSON',
 
     # Database classes
     '/dbFindByFilename.json', 'DBFindByFilename',
@@ -90,12 +92,23 @@ class DBJS:
         return f.read()
 
 
+class ContentJS:
+    def GET(self):
+        f = open("templates/js/content.js")
+        return f.read()
+
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- JSON classes --------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
 class MatchJSON:
     def GET(self):
         return match.match()
+
+
+class ContentJSON:
+    def GET(self):
+        return db.load_content_to_json()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -109,11 +122,11 @@ class DBAdd:
 
         # Put the content in a temporary file
         # because "MidiFile()" expects a path to a file.
-        path = "templates/midi/" + filename
-        temp = open(path, "r+")
-        temp.write(content)
-        midi = MidiFile(path)
-        db.add(midi_file=midi, filename=filename)
+        # path = "templates/midi/" + filename
+        # temp = open(path, "r+")  # read and write
+        # temp.write(content)
+        # midi = MidiFile(path)
+        db.add(midi_file=content, filename=filename)
         # db.find_by_query(midi_file=midifile)
         return render.home()
 
@@ -150,6 +163,7 @@ class DBFindByQuery:
         temp.write(content)
         midi = MidiFile(path)
         db.find_by_query(midi_file=midi)
+
         return render.query()
 
 

@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import gridfs
 import representation
+import json
 
 db, fs = 0, 0
 
@@ -80,3 +81,13 @@ def find_by_query(midi_file):
     #    print "ioi   = " + str(iois)
     #    print "notes = " + str(notes)
     #return 0
+
+
+def load_content_to_json():
+    result = json.loads("{\"content\": []}")
+    i = 1
+    for grid_out in fs.find(no_cursor_timeout=True):
+        result["content"].append({"index": i, "title": grid_out.filename, "listen": "listen"})
+        i += 1
+    result = json.dumps(result)
+    return result

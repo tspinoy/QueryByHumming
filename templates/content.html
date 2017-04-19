@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Content</title>
+    <title>QbH | Content</title>
 
     <script type="text/javascript" src="./js/db.js"></script>
+    <script type="text/javascript" src="./js/content.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="./css/general.css">
 </head>
 
@@ -22,18 +25,28 @@
         </ul>
     </nav>
     <br>
+    <br>
+    <br>
 
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Content ----------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
     <div class="skip-navbar">
-        <p>Hier komt de inhoud van de database.</p>
+        <button type="button" onclick="fillContentTable()">Show content</button>
+    </div>
+
+    <div>
+        <p id="loadingInformation"></p>
+    </div>
+
+    <div>
+        <table id="contentTable"></table>
     </div>
 
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Footer ------------------------------------------------------>
 <!--------------------------------------------------------------------------------------------------------------------->
-    <nav class="down">
+    <nav class="bottom">
         Query by Humming © Thijs Spinoy
     </nav>
 
