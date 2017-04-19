@@ -3,6 +3,11 @@ var indexColumn = 0;
 var titleColumn = 1;
 var reversed = false;
 
+/*
+We want to pass a comparator as an argument to sortContentTable(). This is not possible in JavaScript, so we do it like this.
+The "reversed"-comparator means the table is reversed at the moment, so we need "<" to make it "normal" again.
+The "not reversed"-comparator means the table is not reversed at the moment, so we need ">" to reverse it.
+ */
 var comparators = {
     "reversed" : function (operand1, operand2) {
         return operand1 < operand2;
@@ -19,6 +24,7 @@ function fillContentTable() {
             dataType: 'json',
             success: function (data, s, j) {
                 console.log(data);
+                $("#contentTable").append("<th><td>#</td><td>Title</td><td>Listen</td></th>");
                 $.each(data.content, function (index, result) {
                     $("#contentTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
                 })
