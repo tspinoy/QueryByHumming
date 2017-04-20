@@ -25,7 +25,9 @@ def longest_common_substring(query, goal):
     return res # return the longest common substring
 
 
-def lcs(a, b):
+def lcs(a, b):  # a = query, b = database instance
+    print a
+    print b
     lengths = [[0 for j in range(len(b) + 1)] for i in range(len(a) + 1)]
     # row 0 and column 0 are initialized to 0 already
     for i, x in enumerate(a):
@@ -44,14 +46,14 @@ def lcs(a, b):
             y -= 1
         else:
             assert a[x - 1] == b[y - 1]
-            result = a[x - 1] + result
+            result = str(a[x - 1]) + result
             x -= 1
             y -= 1
-    res = {'algorithm': "lcss", "resultString": result, 'length': len(result)}
+    res = {'algorithm': "lcss", "resultString": result, 'matchLength': len(result), 'totalQueryLength': len(a)}
     return res
 
-#longest_common_substring("aaabbbaaa", "aaababaaa")
-print lcs("aaabbbaaa", "aaababaaa")
+# longest_common_substring("aaabbbaaa", "aaababaaa")
+# print lcs("aaabbbaaa", "aaababaaa")
 
 
 def match():

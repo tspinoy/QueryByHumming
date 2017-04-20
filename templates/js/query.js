@@ -1,56 +1,45 @@
 /* ------------------------------------------------------------------------------------------------------------------ *
  * ---------------------------------------------- Query with new file ----------------------------------------------- *
  * ------------------------------------------------------------------------------------------------------------------ */
-var queryByFileForm = document.getElementById("query-by-file-form");
-var fileSelect = document.getElementById("select-query");
-var uploadButton = document.getElementById("upload-query-button");
+// import content.js to use the sorting algorithm
+var script = document.createElement('script');
+script.src = "content.js";
+document.head.appendChild(script);
 
-queryByFileForm.onsubmit = function(event) {
-  event.preventDefault();
+var queryResultsTableFilled = false;
 
-  // Update button text.
-  uploadButton.innerHTML = 'Uploading...';
-
-  // Get the selected files from the input.
-  var files = fileSelect.files;
-
-  // Create a new FormData object.
-  var formData = new FormData();
-
-  // Loop through each of the selected files. (for in case you decide to allow the user to select multiple files at once)
-  for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-
-      // Check the file type.
-      if (!file.type.match('audio.*')) {
-          continue;
-      }
-
-      // Add the file to the request.
-      console.log(filename);
-      formData.append('queryFile', file, file.name);
-  }
-
-  // Set up the request.
-  var xhr = new XMLHttpRequest();
-
-  // Open the connection.
-  xhr.open('POST', 'server.py', true);
-
-  // Set up a handler for when the request finishes.
-  xhr.onload = function () {
-      if (xhr.status === 200) {
-          // File(s) uploaded.
-          uploadButton.innerHTML = 'Upload';
-          alert('Your file has successfully been uploaded!')
-      } else {
-          alert('An error occurred!');
-      }
-  };
-
-  // Send the Data.
-  xhr.send(formData);
-};
+$(function() {
+    $('#upload-query-button').click(function() {
+        var files = document.getElementById("upload-query").files;
+        if (!queryResultsTableFilled) {
+            if (files.length < 1) {
+                alert("Please select a file.");
+            }
+            else {
+                var form_data = new FormData();
+                form_data.append("queryFile", files[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/dbFindByQuery.json',
+                    data: form_data,
+                    dataType: 'json',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    async: false,
+                    success: function (response, s, j) {
+                        $("#queryResultsTable").append("<tr><th>#</th><th>Title</th><th>Score</th><th>Listen</th></tr>");
+                        $.each(response.matches, function (index, result) {
+                            $("#queryResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.title + "</td><td>" + result.score + "</td><td>" + result.listen + "</td></tr>");
+                        });
+                        sortTable("queryResultsTable", scoreColumn, comparators["sort normal"]);
+                    }
+                });
+                queryResultsTableFilled = true;
+            }
+        }
+    });
+});
 
 /* ------------------------------------------------------------------------------------------------------------------ *
  * ----------------------------------------------------- Other ------------------------------------------------------ *

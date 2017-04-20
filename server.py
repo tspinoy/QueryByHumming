@@ -22,6 +22,7 @@ urls = (
     '/js/home.js', 'HomeJS',
     '/js/query.js', 'QueryJS',
     '/js/db.js', 'DBJS',
+    '/content.js', 'ContentJS',
     '/js/content.js', 'ContentJS',
 
     # JSON requests
@@ -162,9 +163,7 @@ class DBFindByQuery:
         temp = open(path, "r+")
         temp.write(content)
         midi = MidiFile(path)
-        db.find_by_query(midi_file=midi)
-
-        return render.query()
+        return db.find_by_query(midi_file=midi)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #

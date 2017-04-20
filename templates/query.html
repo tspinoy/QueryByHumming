@@ -28,8 +28,8 @@
 <!--------------------------------------------------------------------------------------------------------------------->
     <div class="skip-navbar">
         <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
-            Upload your query here: <input id="select-query" type="file" name="queryFile" accept=".mid"><br>
-            <button id="upload-query-button" type="submit">Search!</button><br>
+            Upload your query here: <input id="upload-query" type="file" name="queryFile" accept=".mid"><br>
+            <button id="upload-query-button" type="button">Search!</button><br>
         </form>
         <input type="button" value="Start" onclick="search()" id="startRecordButton">
         <input type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
@@ -38,7 +38,7 @@
     <br>
     <br>
 
-    <table id="results"></table>
+    <table id="queryResultsTable"></table>
 
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Footer ------------------------------------------------------>
