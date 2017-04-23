@@ -19,10 +19,10 @@ urls = (
     '/css/general.css', 'GeneralCSS',
 
     # JavaScript files
+    '/tables.js', 'TablesJS',
     '/js/home.js', 'HomeJS',
     '/js/query.js', 'QueryJS',
     '/js/db.js', 'DBJS',
-    '/content.js', 'ContentJS',
     '/js/content.js', 'ContentJS',
 
     # JSON requests
@@ -96,6 +96,12 @@ class DBJS:
 class ContentJS:
     def GET(self):
         f = open("templates/js/content.js")
+        return f.read()
+
+
+class TablesJS:
+    def GET(self):
+        f = open("templates/js/tables.js")
         return f.read()
 
 
