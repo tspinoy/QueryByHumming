@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------------------------------------ *
  * ---------------------------------------------- Query with new file ----------------------------------------------- *
  * ------------------------------------------------------------------------------------------------------------------ */
-// import content.js to use the sorting algorithm
+// import tables.js to get information about tables (column-numbers, the sorting algorithm, etc)
 var script = document.createElement('script');
-script.src = "content.js";
+script.src = "tables.js";
 document.head.appendChild(script);
 
 var queryResultsTableFilled = false;
