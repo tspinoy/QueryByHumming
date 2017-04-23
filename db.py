@@ -48,8 +48,8 @@ def connect_db():
 # -------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- Add & get ----------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-def add(midi_file, filename):
-    kwargs = {"filename": filename}
+def add(midi_file, filename, title, artist):
+    kwargs = {"filename": filename, "metadata": {"title": title, "artist": artist}}
     fs.put(midi_file, **kwargs)
 
 
@@ -104,7 +104,11 @@ def load_content_to_json():
     i = 1
 
     for grid_out in fs.find(no_cursor_timeout=True):
-        result["content"].append({"index": i, "title": grid_out.filename, "listen": "listen"})
+        result["content"].append({"index": i,
+                                  "filename": grid_out.filename,
+                                  "title": grid_out.metadata["title"],
+                                  "artist": grid_out.metadata["artist"],
+                                  "listen": "listen"})
         i += 1
 
     result = json.dumps(result)

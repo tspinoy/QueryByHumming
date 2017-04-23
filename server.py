@@ -120,15 +120,9 @@ class DBAdd:
         storage = web.input(uploadFile={})
         filename = storage.uploadFile.filename    # The filename.
         content = storage.uploadFile.file.read()  # The content of the file.
-
-        # Put the content in a temporary file
-        # because "MidiFile()" expects a path to a file.
-        # path = "templates/midi/" + filename
-        # temp = open(path, "r+")  # read and write
-        # temp.write(content)
-        # midi = MidiFile(path)
-        db.add(midi_file=content, filename=filename)
-        # db.find_by_query(midi_file=midifile)
+        title = storage.title                     # The title of the new sound.
+        artist = storage.artist                   # The artist of the new sound.
+        db.add(midi_file=content, filename=filename, title=title, artist=artist)
         return render.home()
 
 

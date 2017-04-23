@@ -1,6 +1,8 @@
 var filledContentTable = false;
-var indexColumn = 0;
-var titleColumn = 1;
+var indexColumn  = 0;
+var artistColumn = 1;
+var titleColumn  = 2;
+var scoreColumn  = 3;
 var reversed = false;
 
 /*
@@ -9,10 +11,10 @@ The "reversed"-comparator means the table is reversed at the moment, so we need 
 The "not reversed"-comparator means the table is not reversed at the moment, so we need ">" to reverse it.
  */
 var comparators = {
-    "reversed" : function (operand1, operand2) {
+    "sort reversed" : function (operand1, operand2) {
         return operand1 < operand2;
     },
-    "not reversed" : function (operand1, operand2) {
+    "sort normal" : function (operand1, operand2) {
         return operand1 > operand2;
     }
 };
@@ -24,9 +26,9 @@ function fillContentTable() {
             dataType: 'json',
             success: function (data, s, j) {
                 console.log(data);
-                $("#contentTable").append("<th><td>#</td><td>Title</td><td>Listen</td></th>");
+                $("#contentTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th></tr>");
                 $.each(data.content, function (index, result) {
-                    $("#contentTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
+                    $("#contentTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
                 })
             }
         });
@@ -36,9 +38,9 @@ function fillContentTable() {
 }
 
 // https://www.w3schools.com/howto/howto_js_sort_table.asp
-function sortContentTable(column, comparator) {
+function sortTable(id, column, comparator) {
   var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("contentTable");
+  table = document.getElementById(id);
   switching = true;
   // Make a loop that will continue until no switching has been done
   while (switching) {
@@ -46,8 +48,8 @@ function sortContentTable(column, comparator) {
     switching = false;
     rows = table.getElementsByTagName("tr");
     // Loop through all table rows
-    // If there are table headers, skip them by setting i to 1
-    for (i = 0; i < (rows.length - 1); i++) {
+    // If there are no table headers, i=0, otherwise i=1
+    for (i = 1; i < (rows.length - 1); i++) {
       // Start by saying there should be no switching
       shouldSwitch = false;
       // Get the two elements you want to compare, one from current row and one from the next
@@ -79,13 +81,27 @@ function sortContentTable(column, comparator) {
 function sortContentTableByIndex() {
     if (reversed) {
         // if the table is reversed we want to make it "normal" again
-        sortContentTable(indexColumn, comparators["not reversed"])
+        sortTable("contentTable", indexColumn, comparators["sort normal"])
     }
     // if the table is not reversed, it will be reversed after sorting
-    else sortContentTable(indexColumn, comparators["reversed"])
+    else sortTable("contentTable", indexColumn, comparators["sort reversed"])
 
 }
 
 function sortContentTableByTitle() {
-    sortContentTable(titleColumn)
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("contentTable", titleColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("contentTable", titleColumn, comparators["sort reversed"])
+}
+
+function sortContentTableByArtist() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("contentTable", artistColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("contentTable", artistColumn, comparators["sort reversed"])
 }

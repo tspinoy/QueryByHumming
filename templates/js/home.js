@@ -3,56 +3,35 @@
 /* ------------------------------------------------------------------------------------------------------------------ *
  * ------------------------------------------------- Add a new file ------------------------------------------------- *
  * ------------------------------------------------------------------------------------------------------------------ */
-var addNewFileForm = document.getElementById("add-new-file-form");
-var fileSelect = document.getElementById("select-file-to-add");
-var uploadButton = document.getElementById("upload-new-file-button");
+$(function() {
+    $('#upload-new-file-button').click(function() {
+        var files = document.getElementById("file-to-add").files;
+        if (files.length < 1) {
+            alert("Please select a file.");
+        }
+        else {
+            var form_data = new FormData();
+            var title = window.prompt("Please enter the title of the sound", "No Title");
+            var artist = window.prompt("Please enter the artist of the sound", "No Artist");
+            form_data.append("uploadFile", files[0]);
+            form_data.append("title", title);
+            form_data.append("artist", artist);
+            $.ajax({
+                type: 'POST',
+                url: '/dbAdd.json',
+                data: form_data,
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: false,
+                success: function (response, s, j) {
 
-addNewFileForm.onsubmit = function(event) {
-  event.preventDefault();
-
-  // Update button text.
-  uploadButton.innerHTML = 'Uploading...';
-
-  // Get the selected files from the input.
-  var files = fileSelect.files;
-
-  // Create a new FormData object.
-  var formData = new FormData();
-
-  // Loop through each of the selected files. (for in case you decide to allow the user to select multiple files at once)
-  for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-
-      // Check the file type.
-      if (!file.type.match('audio.*')) {
-          continue;
-      }
-
-      // Add the file to the request.
-      console.log(filename);
-      formData.append('uploadFile', file, filename);
-  }
-
-  // Set up the request.
-  var xhr = new XMLHttpRequest();
-
-  // Open the connection.
-  xhr.open('POST', 'server.py', true);
-
-  // Set up a handler for when the request finishes.
-  xhr.onload = function () {
-      if (xhr.status === 200) {
-          // File(s) uploaded.
-          uploadButton.innerHTML = 'Upload';
-          alert('Your file has successfully been uploaded!')
-      } else {
-          alert('An error occurred!');
-      }
-  };
-
-  // Send the Data.
-  xhr.send(formData);
-};
+                }
+            });
+        }
+    });
+});
 
 /* ------------------------------------------------------------------------------------------------------------------ *
  * ---------------------------------------------------- Redirect ---------------------------------------------------- *
@@ -86,17 +65,4 @@ function added() {
             console.log("errorThrown = " + t);
         }
     });
-}
-
-var searchForm = document.getElementById("search-form");
-searchForm.onsubmit = function(event){
-    var radioresult = {};
-};
-
-function enableUploadButton(){
-    uploadButton.disabled = false;
-}
-
-function download() {
-    alert("The function to download a sound from the database has to be implemented.");
 }

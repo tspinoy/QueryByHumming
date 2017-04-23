@@ -35,9 +35,9 @@
             <tr>
                 <td>
                     <h2>Add a new sound to the database.</h2>
-                    <form id="add-new-file-form" action="dbAdd.json" method="POST" enctype="multipart/form-data">
-                        <input type="file" id="select-file-to-add" name="uploadFile"> <!--the user can only select one file-->
-                        <button type="submit" id="upload-new-file-button">Upload</button>
+                    <form enctype="multipart/form-data">
+                        <input type="file" id="file-to-add" name="uploadFile"> <!--the user can only select one file-->
+                        <button type="button" id="upload-new-file-button">Upload</button>
                     </form>
                     <!--old <input id="addNewSound" type="file" onchange="added()"> -->
                 </td>
