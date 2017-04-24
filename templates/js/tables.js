@@ -84,3 +84,40 @@ function sortContentTableByArtist() {
     // if the table is not reversed, it will be reversed after sorting
     else sortTable("contentTable", artistColumn, comparators["sort reversed"])
 }
+
+function sortQueryTableByIndex() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("queryResultsTable", indexColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("queryResultsTable", indexColumn, comparators["sort reversed"])
+
+}
+
+function sortQueryTableByTitle() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("queryResultsTable", titleColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("queryResultsTable", titleColumn, comparators["sort reversed"])
+}
+
+function sortQueryTableByArtist() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("queryResultsTable", artistColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("queryResultsTable", artistColumn, comparators["sort reversed"])
+}
+
+function sortQueryTableByScore() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("queryResultsTable", scoreColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("queryResultsTable", scoreColumn, comparators["sort reversed"])
+}
