@@ -54,7 +54,7 @@ urls = (
 
     # Image files
     '/img/header.jpg', 'HeaderJPG',
-    '/favicon.ico', 'Favicon'
+    '/favicon.png', 'Favicon'
 )
 
 render = web.template.render('templates/')
@@ -267,7 +267,7 @@ class DBFindByQuery:
 # -------------------------------------------------------------------------------------------------------------------- #
 class Favicon:
     def GET(self):
-        f = open("favicon.ico")
+        f = open("favicon.png")
         return f.read()
 
 
