@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import os
 import gridfs
 import representation
 import json
@@ -70,10 +71,8 @@ def find_by_artist(artist):
 
 def compute_match_score(ioi, rel_notes):
     score = 0
-    print ioi["totalQueryLength"]
-    print ioi["matchLength"]
-    score += (ioi["totalQueryLength"] / ioi["matchLength"])
-    score += (rel_notes["totalQueryLength"] / rel_notes["matchLength"])
+    score += (float(ioi["totalQueryLength"]) / float(ioi["matchLength"]))
+    score += (float(rel_notes["totalQueryLength"]) / float(rel_notes["matchLength"]))
     score /= 200  # divide by 100 times the amount of calculations you did
     score *= 100  # for percents
     return score
@@ -90,10 +89,17 @@ def find_by_query(midi_file):
         db_element_path = "templates/midi/" + db_element.filename
         temp = open(db_element_path, "r+")
         temp.write(db_element.read())
-        ioi_match = match.lcs(query_ioi, representation.ioi(representation.get_onset_and_note_messages(MidiFile(db_element_path))))
-        relative_notes_match = match.lcs(query_relative_notes, representation.relative_note(representation.get_onset_and_note_messages(MidiFile(db_element_path))))
+        ioi_match = match.lcs(query_ioi,
+                              representation.ioi(representation.get_onset_and_note_messages(MidiFile(db_element_path))))
+        relative_notes_match = match.lcs(query_relative_notes,
+                                         representation.relative_note(representation.get_onset_and_note_messages(MidiFile(db_element_path))))
         score = compute_match_score(ioi_match, relative_notes_match)
-        result["matches"].append({"title": db_element.filename, "listen": "listen", "score": score})
+        result["matches"].append({"filename": db_element.filename,
+                                  "title": db_element.metadata["title"],
+                                  "artist": db_element.metadata["artist"],
+                                  "listen": "listen",
+                                  "score": score})
+        # os.remove(db_element_path)
 
     result = json.dumps(result)
     return result

@@ -1,5 +1,6 @@
 import web
 
+import os
 import match
 import db
 from mido import MidiFile
@@ -153,7 +154,6 @@ class DBFindByID:
 class DBFindByQuery:
     def POST(self):
         storage = web.input(queryFile={})
-        print storage
         filename = storage.queryFile.filename    # The filename
         content = storage.queryFile.file.read()  # The content of the file
 
@@ -163,7 +163,10 @@ class DBFindByQuery:
         temp = open(path, "r+")
         temp.write(content)
         midi = MidiFile(path)
-        return db.find_by_query(midi_file=midi)
+        result = db.find_by_query(midi_file=midi)
+        # os.remove(path)
+
+        return result
 
 
 # -------------------------------------------------------------------------------------------------------------------- #

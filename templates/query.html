@@ -29,8 +29,11 @@
     <div class="skip-navbar">
         <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
             Upload your query here: <input id="upload-query" type="file" name="queryFile" accept=".mid"><br>
-            <button id="upload-query-button" type="button">Search!</button><br>
+            <button id="upload-query-button" type="button">Search!</button>
         </form>
+        <button type="button" onclick="sortContentTableByIndex()">Sort by index</button>
+        <button type="button" onclick="sortContentTableByArtist()">Sort by artist</button>
+        <button type="button" onclick="sortContentTableByTitle()">Sort by title</button><br>
         <input type="button" value="Start" onclick="search()" id="startRecordButton">
         <input type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
     </div>
