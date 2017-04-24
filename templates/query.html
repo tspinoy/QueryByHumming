@@ -1,53 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>QbH | Query</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Query | QbH</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" sizes="16x16">
-    <link rel="stylesheet" type="text/css" href="./css/general.css">
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="./js/query.js"></script>
     <script type="text/javascript" src="./js/db.js"></script>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/creative.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
+
+<body id="page-top">
 <!--------------------------------------------------------------------------------------------------------------------->
 <!--------------------------------------------------- Navigation bar -------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
-    <nav>
-        <ul>
-            <li><a href="home.html">Query by Humming</a></li>
-            <li><a href="home.html">Home</a></li>
-            <li><a class="active" href="query.html">Query</a></li>
-            <li><a href="content.html">Content</a></li>
-        </ul>
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="home.html">Query by Humming</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#instructions">Instructions</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#controlpanel">Controls</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#results">Results</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
     </nav>
-    <br>
 <!--------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------- Content ----------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
-    <div class="skip-navbar">
-        <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
-            Upload your query here: <input id="upload-query" type="file" name="queryFile" accept=".mid"><br>
-            <button id="upload-query-button" type="button">Search!</button>
-        </form>
-        <button type="button" onclick="sortContentTableByIndex()">Sort by index</button>
-        <button type="button" onclick="sortContentTableByArtist()">Sort by artist</button>
-        <button type="button" onclick="sortContentTableByTitle()">Sort by title</button><br>
-        <input type="button" value="Start" onclick="search()" id="startRecordButton">
-        <input type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
-    </div>
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">search with a query</h1>
+                <hr>
+                <p>If you want to insert a query, press continue.</p>
+                <a href="#instructions" class="btn btn-primary btn-xl page-scroll">Continue</a>
+            </div>
+        </div>
+    </header>
 
-    <br>
-    <br>
+    <section class="bg-primary" id="instructions">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">How can you query the database?</h2>
+                    <hr class="light">
+                    <p class="text-faded">1. Press the button below.</p>
+                    <p class="text-faded">2. Upload your sound. Make sure it is a MIDI file.</p>
+                    <p class="text-faded">3. Press the search button.</p>
+                    <a href="#controlpanel" class="page-scroll btn btn-default btn-xl sr-button">Get Started!</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <table id="queryResultsTable"></table>
+    <section id="controlpanel">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Controls</h2>
+                    <hr>
+                    <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
+                        <input class="btn btn-primary" id="upload-query" type="file" name="queryFile" accept=".mid">
+                        <button class="btn btn-primary" id="upload-query-button" type="button">Search!</button>
+                    </form>
+                    <br>
+                    <button class="btn btn-primary" type="button" onclick="sortContentTableByIndex()">Sort by index</button>
+                    <button class="btn btn-primary" type="button" onclick="sortContentTableByArtist()">Sort by artist</button>
+                    <button class="btn btn-primary" type="button" onclick="sortContentTableByTitle()">Sort by title</button><br><br>
+                    <input class="btn btn-primary" type="button" value="Start" onclick="search()" id="startRecordButton">
+                    <input class="btn btn-primary" type="button" value="Stop" onclick="stopRecordingAudio()" id="stopRecordButton">
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!--------------------------------------------------------------------------------------------------------------------->
-<!------------------------------------------------------- Footer ------------------------------------------------------>
-<!--------------------------------------------------------------------------------------------------------------------->
-    <nav class="bottom">
-        Query by Humming © Thijs Spinoy
-    </nav>
+    <section class="bg-primary" id="results">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <table id="queryResultsTable"></table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/creative.min.js"></script>
 </body>
 </html>

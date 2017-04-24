@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Content | QbH</title>
 
-    <script type="text/javascript" src="./js/db.js"></script>
-    <script type="text/javascript" src="./js/content.js"></script>
+    <title>Add | QbH</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" sizes="16x16">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="./js/add.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +35,7 @@
     <![endif]-->
 </head>
 
-<body id="page-top" onload="fillContentTable()">
+<body id="page-top">
 <!--------------------------------------------------------------------------------------------------------------------->
 <!--------------------------------------------------- Navigation bar -------------------------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -51,7 +53,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#content">Content</a>
+                        <a class="page-scroll" href="#instructions">Instructions</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#add">Add</a>
                     </li>
                 </ul>
             </div>
@@ -65,24 +70,40 @@
     <header>
         <div class="header-content">
             <div class="header-content-inner">
-                <h1 id="homeHeading">view content</h1>
+                <h1 id="homeHeading">add your own music to the database</h1>
                 <hr>
-                <p>This page shows you the whole content of the database.</p>
-                <a href="#content" class="btn btn-primary btn-xl page-scroll">Continue</a>
+                <p>If you want to upload your music, press continue.</p>
+                <a href="#instructions" class="btn btn-primary btn-xl page-scroll">Continue</a>
             </div>
         </div>
     </header>
 
-    <section class="bg-primary" id="content">
+    <section class="bg-primary" id="instructions">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <p id="loadingInformation">Content is loading ...</p>
-                    <button class="btn btn-default" type="button" onclick="sortContentTableByIndex()">Sort by index</button>
-                    <button class="btn btn-default" type="button" onclick="sortContentTableByArtist()">Sort by artist</button>
-                    <button class="btn btn-default" type="button" onclick="sortContentTableByTitle()">Sort by title</button><br><br>
-                    <table id="contentTable"></table><br>
-                    <a href="#content" class="page-scroll btn btn-default">Top of the table</a>
+                    <h2 class="section-heading">How can you upload your music to the database?</h2>
+                    <hr class="light">
+                    <p class="text-faded">1. Press the button below.</p>
+                    <p class="text-faded">2. Upload your sound. Make sure it is a MIDI file.</p>
+                    <p class="text-faded">3. Press the upload button.</p>
+                    <a href="#add" class="page-scroll btn btn-default btn-xl sr-button">Get Started!</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="add">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Time to upload!</h2>
+                    <hr>
+                    <form enctype="multipart/form-data">
+                        <input type="file" id="file-to-add" name="uploadFile"> <!--the user can only select one file-->
+                        <button class="btn btn-primary" type="button" id="upload-new-file-button">Upload</button>
+                    </form><br>
+                    <p id="uploadInformation"></p>
                 </div>
             </div>
         </div>
@@ -101,7 +122,5 @@
 
     <!-- Theme JavaScript -->
     <script src="js/creative.min.js"></script>
-
 </body>
-
 </html>

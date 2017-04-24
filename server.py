@@ -13,18 +13,28 @@ urls = (
     # HTML files
     '/', 'Index',
     '/home.html', 'Home',
+    '/add.html', 'Add',
     '/query.html', 'Query',
     '/content.html', 'Content',
 
     # CSS files
-    '/css/general.css', 'GeneralCSS',
+    '/css/creative.min.css', 'CreativeMinCSS',
+    '/vendor/bootstrap/css/bootstrap.min.css', 'BootstrapMinCSS',
+    '/vendor/magnific-popup/magnific-popup.css', 'MagnificPopupCSS',
+    '/vendor/font-awesome/css/font-awesome.min.css', 'FontAwesomeMinCSS',
 
     # JavaScript files
     '/tables.js', 'TablesJS',
-    '/js/home.js', 'HomeJS',
+    '/js/add.js', 'AddJS',
     '/js/query.js', 'QueryJS',
     '/js/db.js', 'DBJS',
     '/js/content.js', 'ContentJS',
+    '/js/creative.min.js', 'CreativeMinJS',
+
+    '/vendor/jquery/jquery.min.js', 'JQueryMinJS',
+    '/vendor/scrollreveal/scrollreveal.min.js', 'ScrollRevealMinJS',
+    '/vendor/magnific-popup/jquery.magnific-popup.min.js', 'MagnificPopupMinJS',
+    '/vendor/bootstrap/js/bootstrap.min.js', 'BootstrapMinJS',
 
     # JSON requests
     '/match.json', 'MatchJSON',
@@ -35,7 +45,16 @@ urls = (
     '/dbFindByArtist.json', 'DBFindByArtist',
     '/dbFindByID.json', 'DBFindByID',
     '/dbFindByQuery.json', 'DBFindByQuery',
-    '/dbAdd.json', 'DBAdd'
+    '/dbAdd.json', 'DBAdd',
+
+    # Font awesome
+    '/vendor/font-awesome/fonts/fontawesome-webfont.woff', 'FAwoff',
+    '/vendor/font-awesome/fonts/fontawesome-webfont.woff2', 'FAwoff2',
+    '/vendor/font-awesome/fonts/fontawesome-webfont.ttf', 'FAttf',
+
+    # Image files
+    '/img/header.jpg', 'HeaderJPG',
+    '/favicon.ico', 'Favicon'
 )
 
 render = web.template.render('templates/')
@@ -44,19 +63,9 @@ render = web.template.render('templates/')
 # -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- HTML classes --------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class Index:
+class Add:
     def GET(self):
-        return render.home()  # Send client immediately to home.html
-
-
-class Home:
-    def GET(self):
-        return render.home()
-
-
-class Query:
-    def GET(self):
-        return render.query()
+        return render.add()
 
 
 class Content:
@@ -64,27 +73,72 @@ class Content:
         return render.content()
 
 
+class Home:
+    def GET(self):
+        return render.home()
+
+
+class Index:
+    def GET(self):
+        return render.home()  # Send client immediately to home.html
+
+
+class Query:
+    def GET(self):
+        return render.query()
+
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- CSS classes ---------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class GeneralCSS:
+class BootstrapMinCSS:
     def GET(self):
-        f = open("templates/css/general.css")
+        f = open("templates/vendor/bootstrap/css/bootstrap.min.css")
+        return f.read()
+
+
+class CreativeMinCSS:
+    def GET(self):
+        f = open("templates/css/creative.min.css")
+        return f.read()
+
+
+class FontAwesomeMinCSS:
+    def GET(self):
+        f = open("templates/vendor/font-awesome/css/font-awesome.min.css")
+        return f.read()
+
+
+class MagnificPopupCSS:
+    def GET(self):
+        f = open("templates/vendor/magnific-popup/magnific-popup.css")
         return f.read()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------ JavaScript classes ------------------------------------------------ #
 # -------------------------------------------------------------------------------------------------------------------- #
-class HomeJS:
+class AddJS:
     def GET(self):
-        f = open("templates/js/home.js")
+        f = open("templates/js/add.js")
         return f.read()
 
 
-class QueryJS:
+class BootstrapMinJS:
     def GET(self):
-        f = open("templates/js/query.js")
+        f = open("templates/vendor/bootstrap/js/bootstrap.min.js")
+        return f.read()
+
+
+class ContentJS:
+    def GET(self):
+        f = open("templates/js/content.js")
+        return f.read()
+
+
+class CreativeMinJS:
+    def GET(self):
+        f = open("templates/js/creative.min.js")
         return f.read()
 
 
@@ -94,9 +148,27 @@ class DBJS:
         return f.read()
 
 
-class ContentJS:
+class JQueryMinJS:
     def GET(self):
-        f = open("templates/js/content.js")
+        f = open("templates/vendor/jquery/jquery.min.js")
+        return f.read()
+
+
+class MagnificPopupMinJS:
+    def GET(self):
+        f = open("templates/vendor/magnific-popup/jquery.magnific-popup.min.js")
+        return f.read()
+
+
+class ScrollRevealMinJS:
+    def GET(self):
+        f = open("templates/vendor/scrollreveal/scrollreveal.min.js")
+        return f.read()
+
+
+class QueryJS:
+    def GET(self):
+        f = open("templates/js/query.js")
         return f.read()
 
 
@@ -107,16 +179,37 @@ class TablesJS:
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
+# ----------------------------------------------- Font Awesome classes ----------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
+class FAttf:
+    def GET(self):
+        f = open('templates/vendor/font-awesome/fonts/fontawesome-webfont.ttf')
+        return f.read()
+
+
+class FAwoff:
+    def GET(self):
+        f = open('templates/vendor/font-awesome/fonts/fontawesome-webfont.woff')
+        return f.read()
+
+
+class FAwoff2:
+    def GET(self):
+        f = open('templates/vendor/font-awesome/fonts/fontawesome-webfont.woff2')
+        return f.read()
+
+
+# -------------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- JSON classes --------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-class MatchJSON:
-    def GET(self):
-        return match.match()
-
-
 class ContentJSON:
     def GET(self):
         return db.load_content_to_json()
+
+
+class MatchJSON:
+    def GET(self):
+        return match.match()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -130,19 +223,19 @@ class DBAdd:
         title = storage.title                     # The title of the new sound.
         artist = storage.artist                   # The artist of the new sound.
         db.add(midi_file=content, filename=filename, title=title, artist=artist)
-        return render.home()
-
-
-class DBFindByFilename:
-    def GET(self):
-        filename = web.input()
-        return db.find_by_filename(filename=filename)
+        return
 
 
 class DBFindByArtist:
     def GET(self):
         artist = web.input()
         return db.find_by_artist(artist=artist)
+
+
+class DBFindByFilename:
+    def GET(self):
+        filename = web.input()
+        return db.find_by_filename(filename=filename)
 
 
 class DBFindByID:
@@ -168,6 +261,20 @@ class DBFindByQuery:
 
         return result
 
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------- Image classes -------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
+class Favicon:
+    def GET(self):
+        f = open("favicon.ico")
+        return f.read()
+
+
+class HeaderJPG:
+    def GET(self):
+        f = open("templates/img/header.jpg")
+        return f.read()
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- Start the server ------------------------------------------------- #
