@@ -21,7 +21,7 @@ def get_messages(midi_file):
     """
     for i, track in enumerate(midi_file.tracks):
         if track.name == "Vocal Guide":
-            track.sort(key=lambda message: message.time) # very important to sort!!!
+            track.sort(key=lambda message: message.time)  # very important to sort!!!
             return track
 
 # result = get_messages(mid)
@@ -40,8 +40,8 @@ def get_onset_and_note_messages(midi_file):
     for msg in messages:
         if msg.type == "note_on":
             onsets_array.append(msg)
-    #for onset in onsets_array:
-    #    onset.time = mido.tick2second(tick=onset.time, ticks_per_beat=mid.ticks_per_beat, tempo=64)
+    # for onset in onsets_array:
+    #     onset.time = mido.tick2second(tick=onset.time, ticks_per_beat=mid.ticks_per_beat, tempo=64)
     return onsets_array
 
 
@@ -71,27 +71,6 @@ def relative_note(messages_array):
         res[index-1] = messages_array[index].note - messages_array[index-1].note
     return res
 
-#messages = get_onset_and_note_messages(result)
-#print messages
-#print ioi(messages)
-#print relative_note(messages)
-
-
-#for i, track in enumerate(mid.tracks):
- #   print('Track {}: {}'.format(i, track.name))
-
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-    # !!!!!!!!!!!! DO NOT REMOVE !!!!!!!!!!!!!!! #
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-    #track.sort(key=lambda message: message.time) # Sort the information on time: very important
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-    # !!!!!!!!!!!! DO NOT REMOVE !!!!!!!!!!!!!!! #
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
-
-  #  print track
-   # for msg in track:
-    #    print(msg)
-
 
 def midifile_to_dict(mid):
     tracks = []
@@ -102,7 +81,6 @@ def midifile_to_dict(mid):
         'ticks_per_beat': mid.ticks_per_beat,
         'tracks': tracks,
     }
-#print midifile_to_dict(mid)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -117,9 +95,6 @@ class RepresentationTestCase(unittest.TestCase):
     def test_ioi(self):
         self.assertTrue(ioi([mido.Message('note_on', note=100, velocity=3, time=3.1),
                              mido.Message('note_on', note=100, velocity=3, time=6.2)]) == 3.1)
-
-    #def test_log_ioi(self):
-    #    self.assertTrue(np.all(log_ioi([1, 2, 4, 8])) == np.all([0, 1, 2]))
 
     def test_relative_note(self):
         self.assertTrue(relative_note([mido.Message('note_on', note=50, velocity=3, time=3.1),

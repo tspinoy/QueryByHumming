@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-import os
 import gridfs
 import representation
 import json
@@ -18,32 +17,7 @@ def connect_db():
     db = connection.qbh
     fs = gridfs.GridFS(db)
 
-    #print(fs.list())
-    #print(fs.find())
-
-    #print db
-    #print fs
-
-    # f = fs.new_file()
-    # f.write("test")
-    # f.close()
-
-    #test_collection = fs.test
-    #print fs
-    #x = []
-    #t = fs.test.find()
-    #for i in t:
-    #    x.append(i)
-    #print x
-
-    #print os.path.getsize(r"/Users/thijsspinoy/OneDrive/John Miles - Music (ingekort).mp3")
-
-    #fileID = fs.put(open(r"/Users/thijsspinoy/OneDrive/John Miles - Music (ingekort).mp3", 'r'))
-    #out = fs.get(fileID)
-    #print out.length
-
     print "db successfully connected: " + str(db)
-    #print "gridfs: " + str(fs)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -63,11 +37,6 @@ def compute_match_score(ioi, rel_notes):
     return score
 
 
-def find_by_artist(artist):
-    f = fs.find({"metadata[\"artist\"]": artist})
-    return f
-
-
 def find_by_filename(filename):
     f = fs.find({"filename": filename})
     result = json.loads("{\"results\": []}")
@@ -84,6 +53,7 @@ def find_by_filename(filename):
     return result
 
 
+# TO DO Complete this so that it works nice
 def find_by_id(file_id):
     f = fs.find({"_id": file_id})
     return f
@@ -114,11 +84,6 @@ def find_by_query(midi_file):
 
     result = json.dumps(result)
     return result
-
-
-def find_by_title(title):
-    f = fs.find({"metadata[\"title\"]": title})
-    return f
 
 
 def load_content_to_json():

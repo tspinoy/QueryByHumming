@@ -2,19 +2,19 @@ import unittest
 
 
 def longest_common_substring(query, goal):
-    m = [[0] * (1 + len(goal)) for i in range(1 + len(query))] # matrix with len(query) rows and len(goal) columns
+    m = [[0] * (1 + len(goal)) for i in range(1 + len(query))]  # matrix with len(query) rows and len(goal) columns
     longest_length = 0
     x_longest_end_idx = 0
     print m
-    for x in range(1, 1 + len(query)): # loop over all characters of the first string
-        for y in range(1, 1 + len(goal)): # loop over all characters of the second string
+    for x in range(1, 1 + len(query)):     # loop over all characters of the first string
+        for y in range(1, 1 + len(goal)):  # loop over all characters of the second string
             if query[x - 1] == goal[y - 1]:
                 m[x][y] = m[x - 1][y - 1] + 1
                 if m[x][y] > longest_length:
                     longest_length = m[x][y]
                     x_longest_end_idx = x
             else:
-                m[x][y] = 0 # the elements are different: write a zero in the matrix
+                m[x][y] = 0  # the elements are different: write a zero in the matrix
     print m
     lcs = query[x_longest_end_idx - longest_length: x_longest_end_idx]
     result = "{\"algorithm\": \"longest common substring\"," \
@@ -22,7 +22,7 @@ def longest_common_substring(query, goal):
              " \"length\": " + str(longest_length) + " }"
     print result
     res = {'algorithm': "longest common substring", "resultString": lcs, 'length': longest_length}
-    return res # return the longest common substring
+    return res  # return the longest common substring
 
 
 def lcs(a, b):  # a = query, b = database instance
@@ -51,13 +51,6 @@ def lcs(a, b):  # a = query, b = database instance
             y -= 1
     res = {'algorithm': "lcss", "resultString": result, 'matchLength': len(result), 'totalQueryLength': len(a)}
     return res
-
-# longest_common_substring("aaabbbaaa", "aaababaaa")
-# print lcs("aaabbbaaa", "aaababaaa")
-
-
-def match():
-    return "{\"results\": [ {\"title\": \"Titel 1\", \"listen\": \"Listen 1\"}, {\"title\": \"Titel 2\", \"listen\": \"Listen 2\"}, {\"title\": \"Titel 3\", \"listen\": \"Listen 3\"}, {\"title\": \"Titel 4\", \"listen\": \"Listen 4\"}, {\"title\": \"Titel 5\", \"listen\": \"Listen 5\"}  ] }"
 
 
 # -------------------------------------------------------------------------------------------------------------------- #

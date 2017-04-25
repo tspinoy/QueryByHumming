@@ -1,7 +1,4 @@
 import web
-
-import os
-import match
 import db
 from mido import MidiFile
 
@@ -39,10 +36,9 @@ urls = (
     '/vendor/bootstrap/js/bootstrap.min.js', 'BootstrapMinJS',
 
     # JSON requests
-    '/match.json', 'MatchJSON',
     '/content.json', 'ContentJSON',
 
-    # Database classes
+    # Database classes - return JSON as well
     '/dbSearch.json', 'DBSearch',
     '/dbFindByFilename.json', 'DBFindByFilename',
     '/dbFindByArtist.json', 'DBFindByArtist',
@@ -221,11 +217,6 @@ class ContentJSON:
         return db.load_content_to_json()
 
 
-class MatchJSON:
-    def GET(self):
-        return match.match()
-
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- Database classes ------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -271,7 +262,6 @@ class DBFindByQuery:
         temp.write(content)
         midi = MidiFile(path)
         result = db.find_by_query(midi_file=midi)
-        # os.remove(path)
 
         return result
 
