@@ -57,6 +57,14 @@ function sortTable(id, column, comparator) {
   reversed = !reversed; // Set the boolean to know the table is now sorted in the other order
 }
 
+function clearTable(id) {
+    var table, row;
+    table = document.getElementById(id);
+    for(row = 1; row < table.rows.length; row++) {
+        table.deleteRow(row);
+    }
+}
+
 function sortContentTableByIndex() {
     if (reversed) {
         // if the table is reversed we want to make it "normal" again
@@ -120,4 +128,32 @@ function sortQueryTableByScore() {
     }
     // if the table is not reversed, it will be reversed after sorting
     else sortTable("queryResultsTable", scoreColumn, comparators["sort reversed"])
+}
+
+function sortSearchTableByIndex() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("searchResultsTable", indexColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("searchResultsTable", indexColumn, comparators["sort reversed"])
+
+}
+
+function sortSearchTableByTitle() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("searchResultsTable", titleColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("searchResultsTable", titleColumn, comparators["sort reversed"])
+}
+
+function sortSearchTableByArtist() {
+    if (reversed) {
+        // if the table is reversed we want to make it "normal" again
+        sortTable("searchResultsTable", artistColumn, comparators["sort normal"])
+    }
+    // if the table is not reversed, it will be reversed after sorting
+    else sortTable("searchResultsTable", artistColumn, comparators["sort reversed"])
 }

@@ -54,21 +54,6 @@ def add(midi_file, filename, title, artist):
     fs.put(midi_file, **kwargs)
 
 
-def find_by_filename(filename):
-    f = fs.find_one({"filename": filename})
-    return f
-
-
-def find_by_id(file_id):
-    f = fs.find_one({"_id": file_id})
-    return f
-
-
-def find_by_artist(artist):
-    f = fs.find_one({"artist": artist})
-    return f
-
-
 def compute_match_score(ioi, rel_notes):
     score = 0
     score += (float(ioi["totalQueryLength"]) / float(ioi["matchLength"]))
@@ -76,6 +61,32 @@ def compute_match_score(ioi, rel_notes):
     score /= 200  # divide by 100 times the amount of calculations you did
     score *= 100  # for percents
     return score
+
+
+def find_by_artist(artist):
+    f = fs.find({"metadata[\"artist\"]": artist})
+    return f
+
+
+def find_by_filename(filename):
+    f = fs.find({"filename": filename})
+    result = json.loads("{\"results\": []}")
+
+    for grid_out in f:
+        print grid_out
+        result["results"].append({"filename": grid_out.filename,
+                                  "title": grid_out.metadata["title"],
+                                  "artist": grid_out.metadata["artist"],
+                                  "listen": "listen"})
+
+    result = json.dumps(result)
+    print result
+    return result
+
+
+def find_by_id(file_id):
+    f = fs.find({"_id": file_id})
+    return f
 
 
 def find_by_query(midi_file):
@@ -105,6 +116,11 @@ def find_by_query(midi_file):
     return result
 
 
+def find_by_title(title):
+    f = fs.find({"metadata[\"title\"]": title})
+    return f
+
+
 def load_content_to_json():
     result = json.loads("{\"content\": []}")
     i = 1
@@ -116,6 +132,28 @@ def load_content_to_json():
                                   "artist": grid_out.metadata["artist"],
                                   "listen": "listen"})
         i += 1
+
+    result = json.dumps(result)
+    return result
+
+
+def search_by_metadata(artist, title):
+    result = json.loads("{\"results\": []}")
+    if artist == "":
+        grid_outs = fs.find({"metadata.title": title})
+    elif title == "":
+        grid_outs = fs.find({"metadata.artist": artist})
+    else:
+        grid_outs = fs.find({"metadata.artist": artist, "metadata.title": title})
+
+    print grid_outs
+
+    for grid_out in grid_outs:
+        print grid_out
+        result["results"].append({"filename": grid_out.filename,
+                                  "title": grid_out.metadata["title"],
+                                  "artist": grid_out.metadata["artist"],
+                                  "listen": "listen"})
 
     result = json.dumps(result)
     return result

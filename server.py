@@ -16,6 +16,7 @@ urls = (
     '/add.html', 'Add',
     '/query.html', 'Query',
     '/content.html', 'Content',
+    '/search.html', 'Search',
 
     # CSS files
     '/css/creative.min.css', 'CreativeMinCSS',
@@ -30,6 +31,7 @@ urls = (
     '/js/db.js', 'DBJS',
     '/js/content.js', 'ContentJS',
     '/js/creative.min.js', 'CreativeMinJS',
+    '/js/search.js', 'SearchJS',
 
     '/vendor/jquery/jquery.min.js', 'JQueryMinJS',
     '/vendor/scrollreveal/scrollreveal.min.js', 'ScrollRevealMinJS',
@@ -41,6 +43,7 @@ urls = (
     '/content.json', 'ContentJSON',
 
     # Database classes
+    '/dbSearch.json', 'DBSearch',
     '/dbFindByFilename.json', 'DBFindByFilename',
     '/dbFindByArtist.json', 'DBFindByArtist',
     '/dbFindByID.json', 'DBFindByID',
@@ -86,6 +89,11 @@ class Index:
 class Query:
     def GET(self):
         return render.query()
+
+
+class Search:
+    def GET(self):
+        return render.search()
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -163,6 +171,12 @@ class MagnificPopupMinJS:
 class ScrollRevealMinJS:
     def GET(self):
         f = open("templates/vendor/scrollreveal/scrollreveal.min.js")
+        return f.read()
+
+
+class SearchJS:
+    def GET(self):
+        f = open("templates/js/search.js")
         return f.read()
 
 
@@ -260,6 +274,14 @@ class DBFindByQuery:
         # os.remove(path)
 
         return result
+
+
+class DBSearch:
+    def POST(self):
+        storage = web.input()
+        title = storage.title
+        artist = storage.artist
+        return db.search_by_metadata(artist=artist, title=title)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
