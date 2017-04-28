@@ -59,7 +59,6 @@ def lcs(a, b):  # a = query, b = database instance
 class MatchTestCase(unittest.TestCase):
     def test_longest_common_substring(self):
         result = longest_common_substring("aaabbbaaa", "aaababaaa")
-        print result
         self.assertEqual(result["length"], 4)
         self.assertEqual(result["resultString"], "aaab")
         self.assertEqual(result["algorithm"], "longest common substring")

@@ -30,9 +30,13 @@ def add(midi_file, filename, title, artist):
 
 def compute_match_score(ioi, rel_notes):
     score = 0
+    print float(ioi["totalQueryLength"])
+    print float(ioi["matchLength"])
+    print float(rel_notes["totalQueryLength"])
+    print float(rel_notes["matchLength"])
     score += (float(ioi["totalQueryLength"]) / float(ioi["matchLength"]))
     score += (float(rel_notes["totalQueryLength"]) / float(rel_notes["matchLength"]))
-    score /= 200  # divide by 100 times the amount of calculations you did
+    score /= 2    # divide by the amount of calculations you did
     score *= 100  # for percents
     return score
 
@@ -64,16 +68,22 @@ def find_by_query(midi_file):
 
     query_relevant_messages = representation.get_onset_and_note_messages(midi_file=midi_file)
     query_ioi = representation.ioi(messages_array=query_relevant_messages)
+    query_ioi = " ".join(map(str, query_ioi))
     query_relative_notes = representation.relative_note(messages_array=query_relevant_messages)
+    query_relative_notes = " ".join(map(str, query_relative_notes))
 
     for db_element in fs.find(no_cursor_timeout=True):
         db_element_path = "templates/midi/" + db_element.filename
         temp = open(db_element_path, "r+")
         temp.write(db_element.read())
-        ioi_match = match.lcs(query_ioi,
-                              representation.ioi(representation.get_onset_and_note_messages(MidiFile(db_element_path))))
-        relative_notes_match = match.lcs(query_relative_notes,
-                                         representation.relative_note(representation.get_onset_and_note_messages(MidiFile(db_element_path))))
+
+        db_element_ioi = representation.ioi(representation.get_onset_and_note_messages(MidiFile(db_element_path)))
+        db_element_ioi = " ".join(map(str, db_element_ioi))
+        db_element_relative_notes = representation.relative_note(representation.get_onset_and_note_messages(MidiFile(db_element_path)))
+        db_element_relative_notes = " ".join(map(str, db_element_relative_notes))
+
+        ioi_match = match.lcs(query_ioi, db_element_ioi)
+        relative_notes_match = match.lcs(query_relative_notes, db_element_relative_notes)
         score = compute_match_score(ioi_match, relative_notes_match)
         result["matches"].append({"filename": db_element.filename,
                                   "title": db_element.metadata["title"],
