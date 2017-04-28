@@ -420,7 +420,7 @@ body {
   webkit-tap-highlight-color: #222222;
 }
 
-table{
+table {
     border: 3px solid #333;
     border-collapse: collapse;
     margin-left: auto;
@@ -431,7 +431,7 @@ table{
 
 }
 
-th{
+th {
     height: 20px;
     padding: 10px;
     border: 3px solid #333;
@@ -439,7 +439,7 @@ th{
     text-align: center;
 }
 
-td{
+td {
     height: 20px;
     padding: 10px;
     border: 1px solid #333;

@@ -24,16 +24,28 @@ def connect_db():
 # ---------------------------------------------------- Add & get ----------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
 def add(midi_file, filename, title, artist):
-    kwargs = {"filename": filename, "metadata": {"title": title, "artist": artist}}
+    # Put the content of the query in a temporary file
+    # because "MidiFile()" expects a path to a file.
+    path = "templates/midi/" + filename
+    temp = open(path, "r+")
+    temp.write(midi_file)
+    midi = MidiFile(path)
+
+    relevant_messages = representation.get_onset_and_note_messages(midi_file=midi)
+    ioi = representation.ioi(messages_array=relevant_messages)
+    ioi = " ".join(map(str, ioi))
+    relative_notes = representation.relative_note(messages_array=relevant_messages)
+    relative_notes = " ".join(map(str, relative_notes))
+
+    kwargs = {"filename": filename, "metadata": {"title": title,
+                                                 "artist": artist,
+                                                 "ioi": ioi,
+                                                 "relative_notes": relative_notes}}
     fs.put(midi_file, **kwargs)
 
 
 def compute_match_score(ioi, rel_notes):
     score = 0
-    print float(ioi["totalQueryLength"])
-    print float(ioi["matchLength"])
-    print float(rel_notes["totalQueryLength"])
-    print float(rel_notes["matchLength"])
     score += (float(ioi["totalQueryLength"]) / float(ioi["matchLength"]))
     score += (float(rel_notes["totalQueryLength"]) / float(rel_notes["matchLength"]))
     score /= 2    # divide by the amount of calculations you did
@@ -77,10 +89,8 @@ def find_by_query(midi_file):
         temp = open(db_element_path, "r+")
         temp.write(db_element.read())
 
-        db_element_ioi = representation.ioi(representation.get_onset_and_note_messages(MidiFile(db_element_path)))
-        db_element_ioi = " ".join(map(str, db_element_ioi))
-        db_element_relative_notes = representation.relative_note(representation.get_onset_and_note_messages(MidiFile(db_element_path)))
-        db_element_relative_notes = " ".join(map(str, db_element_relative_notes))
+        db_element_ioi = db_element.metadata["ioi"]
+        db_element_relative_notes = db_element.metadata["relative_notes"]
 
         ioi_match = match.lcs(query_ioi, db_element_ioi)
         relative_notes_match = match.lcs(query_relative_notes, db_element_relative_notes)
