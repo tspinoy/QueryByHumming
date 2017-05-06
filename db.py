@@ -3,7 +3,9 @@ import gridfs
 import representation
 import json
 import match
+import tempfile
 from mido import MidiFile
+import time
 
 db, fs = 0, 0
 
@@ -27,15 +29,25 @@ def add(midi_file, filename, title, artist):
     # Put the content of the query in a temporary file
     # because "MidiFile()" expects a path to a file.
     path = "templates/midi/" + filename
-    temp = open(path, "r+")
+    temp = tempfile.NamedTemporaryFile(delete=False)
+    print temp
     temp.write(midi_file)
-    midi = MidiFile(path)
+    print temp.name
+    print temp.read()
+    midi = MidiFile(temp.name)
+    print midi
+
+    for i, track in enumerate(midi.tracks):
+        for msg in track:
+            print(msg)
 
     relevant_messages = representation.get_onset_and_note_messages(midi_file=midi)
     ioi = representation.ioi(messages_array=relevant_messages)
     ioi = " ".join(map(str, ioi))
+    print ioi
     relative_notes = representation.relative_note(messages_array=relevant_messages)
     relative_notes = " ".join(map(str, relative_notes))
+    print relative_notes
 
     kwargs = {"filename": filename, "metadata": {"title": title,
                                                  "artist": artist,
@@ -46,8 +58,8 @@ def add(midi_file, filename, title, artist):
 
 def compute_match_score(ioi, rel_notes):
     score = 0
-    score += (float(ioi["totalQueryLength"]) / float(ioi["matchLength"]))
-    score += (float(rel_notes["totalQueryLength"]) / float(rel_notes["matchLength"]))
+    score += (float(ioi["matchLength"] / float(ioi["totalQueryLength"])))
+    score += (float(rel_notes["matchLength"] / float(rel_notes["totalQueryLength"])))
     score /= 2    # divide by the amount of calculations you did
     score *= 100  # for percents
     return score
@@ -85,11 +97,9 @@ def find_by_query(midi_file):
     query_relative_notes = " ".join(map(str, query_relative_notes))
 
     for db_element in fs.find(no_cursor_timeout=True):
-        db_element_path = "templates/midi/" + db_element.filename
-        temp = open(db_element_path, "r+")
-        temp.write(db_element.read())
 
         db_element_ioi = db_element.metadata["ioi"]
+
         db_element_relative_notes = db_element.metadata["relative_notes"]
 
         ioi_match = match.lcs(query_ioi, db_element_ioi)
@@ -107,6 +117,7 @@ def find_by_query(midi_file):
 
 
 def load_content_to_json():
+    start = time.time()
     result = json.loads("{\"content\": []}")
     i = 1
 
@@ -119,6 +130,8 @@ def load_content_to_json():
         i += 1
 
     result = json.dumps(result)
+    end = time.time()
+    print "time elapsed: " + str(end - start)
     return result
 
 

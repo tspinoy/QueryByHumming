@@ -20,7 +20,11 @@ def get_messages(midi_file):
     :return: a sorted list of messages from the Vocal Guide.
     """
     for i, track in enumerate(midi_file.tracks):
-        if track.name == "Vocal Guide":
+        print track
+        if len(midi_file.tracks) == 1:
+            track.sort(key=lambda message: message.time)  # very important to sort!!!
+            return track
+        elif track.name == "Electric Piano":
             track.sort(key=lambda message: message.time)  # very important to sort!!!
             return track
 

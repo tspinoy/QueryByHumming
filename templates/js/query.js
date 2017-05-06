@@ -11,32 +11,38 @@ var queryResultsTableFilled = false;
 $(function() {
     $('#upload-query-button').click(function() {
         var files = document.getElementById("upload-query").files;
-        if (!queryResultsTableFilled) {
-            if (files.length < 1) {
-                alert("Please select a file.");
+        if (files.length < 1) {
+            alert("Please select a file.");
+        }
+        else {
+            if (queryResultsTableFilled) {
+                $("#queryResultsTable tr").remove();
             }
-            else {
-                var form_data = new FormData();
-                form_data.append("queryFile", files[0]);
-                $.ajax({
-                    type: 'POST',
-                    url: '/dbFindByQuery.json',
-                    data: form_data,
-                    dataType: 'json',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    async: false,
-                    success: function (response, s, j) {
-                        $("#queryResultsTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th><th>Score</th></tr>");
-                        $.each(response.matches, function (index, result) {
-                            $("#queryResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td><td>" + result.score + "%" + "</td>");
-                        });
-                        sortTable("queryResultsTable", scoreColumn, comparators["sort normal"]);
-                    }
-                });
-                queryResultsTableFilled = true;
-            }
+            $('#loadingInformation').html("The results are loading ...");
+            var form_data = new FormData();
+            form_data.append("queryFile", files[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/dbFindByQuery.json',
+                data: form_data,
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: false,
+                success: function (response, s, j) {
+                    $("#queryResultsTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th><th>Score</th></tr>");
+                    $.each(response.matches, function (index, result) {
+                        $("#queryResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td><td>" + result.score + "%" + "</td>");
+                    });
+                    sortTable("queryResultsTable", scoreColumn, comparators["sort normal"]);
+                    $('#loadingInformation').html("All results are loaded.");
+                },
+                error: function () {
+                    $('#loadingInformation').html("Something went wrong, please try again.");
+                }
+            });
+            queryResultsTableFilled = true;
         }
     });
 });
@@ -119,54 +125,54 @@ function search() {
 }
 
 /*
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-var record = document.querySelector("#startRecordButton");
-var stop = document.querySelector("#stopRecordButton");
-var soundClips = document.querySelector('.sound-clips');
-if (navigator.getUserMedia) {
-    console.log('getUserMedia supported.');
-    navigator.getUserMedia (
-        // constraints - only audio needed for this app
-        {
-            audio: true
-        },
+ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+ var record = document.querySelector("#startRecordButton");
+ var stop = document.querySelector("#stopRecordButton");
+ var soundClips = document.querySelector('.sound-clips');
+ if (navigator.getUserMedia) {
+ console.log('getUserMedia supported.');
+ navigator.getUserMedia (
+ // constraints - only audio needed for this app
+ {
+ audio: true
+ },
 
-        // Success callback
-        function(stream) {
+ // Success callback
+ function(stream) {
 
 
-        },
+ },
 
-        // Error callback
-        function(err) {
-            console.log('The following gUM error occured: ' + err);
-        }
-    );
-} else {
-    console.log('getUserMedia not supported on your browser!');
-}
+ // Error callback
+ function(err) {
+ console.log('The following gUM error occured: ' + err);
+ }
+ );
+ } else {
+ console.log('getUserMedia not supported on your browser!');
+ }
 
-// Capturing the media stream
-var mediaRecorder = new MediaRecorder();
-record.onclick = function() {
-    mediaRecorder.start();
-    console.log(mediaRecorder.state);
-    console.log("recorder started");
-    record.style.background = "red";
-    record.style.color = "black";
-};
+ // Capturing the media stream
+ var mediaRecorder = new MediaRecorder();
+ record.onclick = function() {
+ mediaRecorder.start();
+ console.log(mediaRecorder.state);
+ console.log("recorder started");
+ record.style.background = "red";
+ record.style.color = "black";
+ };
 
-var chunks = [];
-mediaRecorder.ondataavailable = function(e) {
-    chunks.push(e.data);
-};
+ var chunks = [];
+ mediaRecorder.ondataavailable = function(e) {
+ chunks.push(e.data);
+ };
 
-stop.onclick = function() {
-    mediaRecorder.stop();
-    console.log(mediaRecorder.state);
-    console.log("recorder stopped");
-    record.style.background = "";
-    record.style.color = "";
-};
+ stop.onclick = function() {
+ mediaRecorder.stop();
+ console.log(mediaRecorder.state);
+ console.log("recorder stopped");
+ record.style.background = "";
+ record.style.color = "";
+ };
 
-*/
+ */

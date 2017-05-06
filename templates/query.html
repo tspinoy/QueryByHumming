@@ -106,7 +106,7 @@
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <h2 class="section-heading">Controls</h2>
                     <hr>
-                    <form id="query-by-file-form" action="dbFindByQuery.json" method="POST" enctype="multipart/form-data">
+                    <form enctype="multipart/form-data">
                         <input style="display: inline-block" class="btn btn-primary" id="upload-query" type="file" name="queryFile" accept=".mid">
                         <button class="btn btn-primary" id="upload-query-button" type="button">Search!</button>
                     </form>
@@ -126,6 +126,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <p id="loadingInformation"></p>
                     <table id="queryResultsTable"></table><br>
                     <a href="#results" class="page-scroll btn btn-default">Top of the table</a>
                 </div>

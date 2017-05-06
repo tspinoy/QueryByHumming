@@ -1,6 +1,8 @@
 import web
 import db
+import tempfile
 from mido import MidiFile
+import time
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------------- URLs ------------------------------------------------------- #
@@ -257,12 +259,16 @@ class DBFindByQuery:
 
         # Put the content of the query in a temporary file
         # because "MidiFile()" expects a path to a file.
-        path = "templates/midi/" + filename
-        temp = open(path, "r+")
+        temp = tempfile.NamedTemporaryFile(delete=False)
+        print temp
         temp.write(content)
-        midi = MidiFile(path)
-        result = db.find_by_query(midi_file=midi)
+        temp.read()
+        midi = MidiFile(temp.name)
 
+        start = time.time()
+        result = db.find_by_query(midi_file=midi)
+        end = time.time()
+        print "time elapsed: " + str(end - start)
         return result
 
 

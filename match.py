@@ -26,8 +26,8 @@ def longest_common_substring(query, goal):
 
 
 def lcs(a, b):  # a = query, b = database instance
-    print a
-    print b
+    print "query = " + a
+    print "dbelt = " + b
     lengths = [[0 for j in range(len(b) + 1)] for i in range(len(a) + 1)]
     # row 0 and column 0 are initialized to 0 already
     for i, x in enumerate(a):
@@ -50,7 +50,12 @@ def lcs(a, b):  # a = query, b = database instance
             x -= 1
             y -= 1
     res = {'algorithm': "lcss", "resultString": result, 'matchLength': len(result), 'totalQueryLength': len(a)}
+    print "result = " + result
     return res
+
+
+#def my_lcss(keyword, text):
+#    for textindex in range(len(text)):
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
