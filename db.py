@@ -6,6 +6,7 @@ import match
 import tempfile
 from mido import MidiFile
 import time
+import os
 
 db, fs = 0, 0
 
@@ -28,14 +29,9 @@ def connect_db():
 def add(midi_file, filename, title, artist):
     # Put the content of the query in a temporary file
     # because "MidiFile()" expects a path to a file.
-    path = "templates/midi/" + filename
     temp = tempfile.NamedTemporaryFile(delete=False)
-    print temp
     temp.write(midi_file)
-    print temp.name
-    print temp.read()
     midi = MidiFile(temp.name)
-    print midi
 
     for i, track in enumerate(midi.tracks):
         for msg in track:
@@ -53,6 +49,8 @@ def add(midi_file, filename, title, artist):
                                                  "artist": artist,
                                                  "ioi": ioi,
                                                  "relative_notes": relative_notes}}
+    temp.close()
+    os.unlink(temp.name)
     fs.put(midi_file, **kwargs)
 
 

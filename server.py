@@ -3,6 +3,7 @@ import db
 import tempfile
 from mido import MidiFile
 import time
+import os
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------------- URLs ------------------------------------------------------- #
@@ -254,19 +255,22 @@ class DBFindByID:
 class DBFindByQuery:
     def POST(self):
         storage = web.input(queryFile={})
-        filename = storage.queryFile.filename    # The filename
         content = storage.queryFile.file.read()  # The content of the file
 
         # Put the content of the query in a temporary file
         # because "MidiFile()" expects a path to a file.
         temp = tempfile.NamedTemporaryFile(delete=False)
-        print temp
         temp.write(content)
         temp.read()
         midi = MidiFile(temp.name)
 
         start = time.time()
+
         result = db.find_by_query(midi_file=midi)
+
+        temp.close()
+        os.unlink(temp.name)
+
         end = time.time()
         print "time elapsed: " + str(end - start)
         return result
