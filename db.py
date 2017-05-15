@@ -70,9 +70,9 @@ def compute_match_score(ioi, rel_notes):
     ioi_match_length = float(ioi["matchLength"])
     ioi_total_length = float(ioi["totalQueryLength"])
     print "ioi_total_length = " + str(ioi_total_length)
-    print str(ioi_edit_distance / ioi_total_length)
+    print str(ioi_edit_distance / ioi_match_length)
 
-    if (ioi_edit_distance / ioi_total_length) <= (1 - tolerance):
+    if (ioi_edit_distance / ioi_match_length) <= tolerance:
         score += 1
     else:
         score += (ioi_match_length / ioi_total_length)
@@ -81,9 +81,9 @@ def compute_match_score(ioi, rel_notes):
     rel_notes_match_length = float(rel_notes["matchLength"])
     rel_notes_total_length = float(rel_notes["totalQueryLength"])
     print "rel_notes_total_length = " + str(rel_notes_total_length)
-    print str(rel_notes_edit_distance / rel_notes_total_length)
+    print str(rel_notes_edit_distance / rel_notes_match_length)
 
-    if (rel_notes_edit_distance / rel_notes_total_length) <= (1 - tolerance):
+    if (rel_notes_edit_distance / rel_notes_match_length) <= tolerance:
         score += 1
     else:
         score += (rel_notes_match_length / rel_notes_total_length)
