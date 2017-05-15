@@ -55,9 +55,41 @@ def add(midi_file, filename, title, artist):
 
 
 def compute_match_score(ioi, rel_notes):
+    print "compute match score"
+    print "ioi.matchlength = " + str(float(ioi["matchLength"]))
+    print "ioi.totallength = " + str(float(ioi["totalQueryLength"]))
+    print "ioi.editdistanc = " + str(ioi["editDistance"])
+    print "rel.matchlength = " + str(float(rel_notes["matchLength"]))
+    print "rel.totallength = " + str(float(rel_notes["totalQueryLength"]))
+    print "rel.editdistanc = " + str(rel_notes["editDistance"])
+
     score = 0
-    score += (float(ioi["matchLength"] / float(ioi["totalQueryLength"])))
-    score += (float(rel_notes["matchLength"] / float(rel_notes["totalQueryLength"])))
+    tolerance = 0.05
+
+    ioi_edit_distance = ioi["editDistance"]
+    ioi_match_length = float(ioi["matchLength"])
+    ioi_total_length = float(ioi["totalQueryLength"])
+    print "ioi_total_length = " + str(ioi_total_length)
+    print str(ioi_edit_distance / ioi_total_length)
+
+    if (ioi_edit_distance / ioi_total_length) <= (1 - tolerance):
+        score += 1
+    else:
+        score += (ioi_match_length / ioi_total_length)
+
+    rel_notes_edit_distance = rel_notes["editDistance"]
+    rel_notes_match_length = float(rel_notes["matchLength"])
+    rel_notes_total_length = float(rel_notes["totalQueryLength"])
+    print "rel_notes_total_length = " + str(rel_notes_total_length)
+    print str(rel_notes_edit_distance / rel_notes_total_length)
+
+    if (rel_notes_edit_distance / rel_notes_total_length) <= (1 - tolerance):
+        score += 1
+    else:
+        score += (rel_notes_match_length / rel_notes_total_length)
+
+    # score += (float(ioi["matchLength"] / float(ioi["totalQueryLength"])))
+    # score += (float(rel_notes["matchLength"] / float(rel_notes["totalQueryLength"])))
     score /= 2    # divide by the amount of calculations you did
     score *= 100  # for percents
     return score
