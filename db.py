@@ -31,6 +31,7 @@ def add(midi_file, filename, title, artist):
     # because "MidiFile()" expects a path to a file.
     temp = tempfile.NamedTemporaryFile(delete=False)
     temp.write(midi_file)
+    temp.read()
     midi = MidiFile(temp.name)
 
     for i, track in enumerate(midi.tracks):
