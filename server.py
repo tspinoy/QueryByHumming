@@ -268,7 +268,7 @@ class DBFindByQuery:
 
         result = db.find_by_query(midi_file=midi)
 
-        temp.close()
+        temp.close()  # delete temporary file
         os.unlink(temp.name)
 
         end = time.time()
@@ -298,10 +298,15 @@ class HeaderJPG:
         f = open("templates/img/header.jpg")
         return f.read()
 
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- Start the server ------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
+def not_found():
+    return web.notfound(render.pageNotFound())
+
 if __name__ == "__main__":
     app = web.application(urls, globals())
+    app.notfound = not_found
     db.connect_db()
     app.run()
