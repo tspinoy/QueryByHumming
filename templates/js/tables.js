@@ -36,8 +36,8 @@ function sortTable(id, column, comparator) {
             x = rows[i].getElementsByTagName("td")[column];
             y = rows[i + 1].getElementsByTagName("td")[column];
             // Check if the two rows should switch place
-            if (column === indexColumn) {
-                if (comparator(x.innerHTML, y.innerHTML)) {
+            if (column === indexColumn || column === scoreColumn) {
+                if (comparator(parseFloat(x.innerHTML), parseFloat(y.innerHTML))) {
                     // If so, mark as a switch and break the loop
                     shouldSwitch = true;
                     break;

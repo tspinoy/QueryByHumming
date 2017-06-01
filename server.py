@@ -281,7 +281,7 @@ class DBSearch:
         storage = web.input()
         title = storage.title
         artist = storage.artist
-        return db.search_by_metadata(artist=artist, title=title)
+        return db.find_by_metadata(artist=artist, title=title)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #

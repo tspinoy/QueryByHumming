@@ -1,7 +1,10 @@
+import math
 from mido import MidiFile
 import numpy as np
 import unittest
 import mido
+
+# mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
 
 mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
 # print mid
@@ -15,12 +18,13 @@ mid = MidiFile("/Users/thijsspinoy/Downloads/AUD_HTX0677.mid")
 # -------------------------------------------------------------------------------------------------------------------- #
 def get_messages(midi_file):
     """
-    We only consider messages from the track Vocal Guide because this is the track where people's voice is stored.
+    We only consider messages from the track Electric Piano 
+    because this is the track where the music we want to compare is stored.
     :param midi_file: a loaded midi-file.
-    :return: a sorted list of messages from the Vocal Guide.
+    :return: a sorted list of messages from the Electric Piano.
     """
     for i, track in enumerate(midi_file.tracks):
-        print track
+        print track.name
         if len(midi_file.tracks) == 1:
             track.sort(key=lambda message: message.time)  # very important to sort!!!
             return track
@@ -28,9 +32,9 @@ def get_messages(midi_file):
             track.sort(key=lambda message: message.time)  # very important to sort!!!
             return track
 
-# result = get_messages(mid)
-# for msg in result:
-#     print(msg)
+result = get_messages(mid)
+for msg in result:
+    print(msg)
 
 
 def get_onset_and_note_messages(midi_file):
@@ -43,6 +47,7 @@ def get_onset_and_note_messages(midi_file):
     onsets_array = []
     for msg in messages:
         if msg.type == "note_on":
+            print msg
             onsets_array.append(msg)
     # for onset in onsets_array:
     #     onset.time = mido.tick2second(tick=onset.time, ticks_per_beat=mid.ticks_per_beat, tempo=64)
@@ -57,10 +62,36 @@ def ioi(messages_array):
     :param messages_array: an array with the onset times.
     :return: a new array with the onset intervals computed by this function.
     """
-    res = np.zeros(len(messages_array)-1)
+    res = np.zeros(len(messages_array))
     for index in range(len(messages_array)):
         res[index-1] = messages_array[index].time - messages_array[index-1].time
     return res
+
+
+def ioi_ratio(ioi_array):
+    """
+    :param ioi_array: an array with the onset times.
+    :return: a new array with ratio's of the onset intervals computed by this function.
+    """
+    print "ioi_array = " + str(ioi_array)
+    res = np.zeros(len(ioi_array)-1)
+    for index in range(len(ioi_array)):
+        if ioi_array[index] == 0:
+            res[index-1] = float(0)
+        else:
+            res[index-1] = (ioi_array[index] / ioi_array[index-1])
+    return res
+
+
+def log_ioi_ratio(ioi_ratio_array):
+    """
+    :param ioi_ratio_array: an array with the onset times.
+    :return: a new array with the logarithm of the ratio's of the onset intervals computed by this function.
+    """
+    print "ioi_ratio_array = " + str(ioi_ratio_array)
+    for index in range(0, len(ioi_ratio_array)):
+        ioi_ratio_array[index] = math.log(ioi_ratio_array[index], 2)
+    return ioi_ratio_array
 
 
 def relative_note(messages_array):

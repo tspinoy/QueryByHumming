@@ -31,9 +31,9 @@ $(function() {
                 processData: false,
                 async: false,
                 success: function (response, s, j) {
-                    $("#queryResultsTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th><th>Score</th></tr>");
+                    $("#queryResultsTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th><th>Score (%)</th></tr>");
                     $.each(response.matches, function (index, result) {
-                        $("#queryResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td><td>" + result.score + "%" + "</td>");
+                        $("#queryResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td><td>" + result.score + "</td>");
                     });
                     sortTable("queryResultsTable", scoreColumn, comparators["sort normal"]);
                     $('#loadingInformation').html("All results are loaded.");
