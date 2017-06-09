@@ -9,8 +9,6 @@ $(function() {
     $('#search-button').click(function() {
         var artist = document.getElementById("artist-textfield").value;
         var title  = document.getElementById("title-textfield").value;
-        console.log("artist = " + artist);
-        console.log("title = " + title);
         if(artist === "" && title === ""){
             $('#inputError').html("You must give an artist, a title or both.")
         }
@@ -33,12 +31,10 @@ $(function() {
                 success: function (data, s, j) {
                     console.log("data = " + data.results);
                     if(firstSearch) {
-                        $("#searchResultsTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th></tr>");
+                        $("#searchResultsTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><!-- <th>Listen</th> --></tr>");
                     }
                     $.each(data.results, function (index, result) {
-                        console.log(data.results[index]);
-                        console.log(result);
-                        $("#searchResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td>");
+                        $("#searchResultsTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><!-- <td>" + result.listen + "</td> -->");
                     });
                     sortTable("searchResultsTable", indexColumn, comparators["sort normal"]);
                     $('#loadingInformation').html("Search completed.");

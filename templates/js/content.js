@@ -12,9 +12,9 @@ function fillContentTable() {
             dataType: 'json',
             success: function (data, s, j) {
                 console.log(data);
-                $("#contentTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><th>Listen</th></tr>");
+                $("#contentTable").append("<tr><th>#</th><th>Artist</th><th>Title</th><!-- <th>Listen</th> --></tr>");
                 $.each(data.content, function (index, result) {
-                    $("#contentTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><td>" + result.listen + "</td></tr>");
+                    $("#contentTable").append("<tr><td>" + (index + 1) + "</td><td>" + result.artist + "</td><td>" + result.title + "</td><!-- <td>" + result.listen + "</td> --></tr>");
                 })
             }
         });

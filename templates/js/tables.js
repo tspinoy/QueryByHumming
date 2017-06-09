@@ -1,19 +1,21 @@
 var indexColumn  = 0;
-var artistColumn = 1;
-var titleColumn  = 2;
-var listenColumn = 3;
-var scoreColumn  = 4;
+var artistColumn = indexColumn + 1;
+var titleColumn  = artistColumn + 1;
+//var listenColumn = titleColumn + 1;
+var scoreColumn  = titleColumn + 1;
 var reversed = false;
 
 /*  We want to pass a comparator as an argument to sortTable(). This is not possible in JavaScript, so we do it like this.
  The "reversed"-comparator means the table is reversed at the moment, so we need "<" to make it "normal" again.
  The "not reversed"-comparator means the table is not reversed at the moment, so we need ">" to reverse it. */
 var comparators = {
+    // Sort in ascending value (smallest value first)
     "sort reversed" : function (operand1, operand2) {
-        return operand1 < operand2;
-    },
-    "sort normal" : function (operand1, operand2) {
         return operand1 > operand2;
+    },
+    // Sort in decreasing value (highest value first)
+    "sort normal" : function (operand1, operand2) {
+        return operand1 < operand2;
     }
 };
 

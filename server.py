@@ -264,15 +264,11 @@ class DBFindByQuery:
         temp.read()
         midi = MidiFile(temp.name)
 
-        start = time.time()
-
         result = db.find_by_query(midi_file=midi)
 
         temp.close()  # delete temporary file
         os.unlink(temp.name)
 
-        end = time.time()
-        print "time elapsed: " + str(end - start)
         return result
 
 

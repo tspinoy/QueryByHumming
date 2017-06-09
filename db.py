@@ -1,11 +1,10 @@
 from pymongo import MongoClient
+from mido import MidiFile
 import gridfs
 import representation
 import json
 import match
 import tempfile
-from mido import MidiFile
-import time
 import os
 
 db, fs = 0, 0
@@ -95,8 +94,8 @@ def find_by_query(midi_file):
 
         db_element_relative_notes = db_element.metadata["relative_notes"]
 
-        ioi_match = match.lcs(query_ioi, db_element_ioi)
-        relative_notes_match = match.lcs(query_relative_notes, db_element_relative_notes)
+        ioi_match = match.lcss(query_ioi, db_element_ioi)
+        relative_notes_match = match.lcss(query_relative_notes, db_element_relative_notes)
         score = match.compute_match_score(ioi_match, relative_notes_match)
         result["matches"].append({"filename": db_element.filename,
                                   "title": db_element.metadata["title"],
@@ -109,7 +108,6 @@ def find_by_query(midi_file):
 
 
 def load_content_to_json():
-    start = time.time()
     result = json.loads("{\"content\": []}")
 
     for grid_out in fs.find(no_cursor_timeout=True):
@@ -119,13 +117,12 @@ def load_content_to_json():
                                   "listen": "listen"})
 
     result = json.dumps(result)
-    end = time.time()
-    print "time elapsed: " + str(end - start)
     return result
 
 
 def find_by_metadata(artist, title):
     result = json.loads("{\"results\": []}")
+
     if artist == "":
         grid_outs = fs.find({"metadata.title": title})
     elif title == "":
@@ -133,10 +130,7 @@ def find_by_metadata(artist, title):
     else:
         grid_outs = fs.find({"metadata.artist": artist, "metadata.title": title})
 
-    print grid_outs
-
     for grid_out in grid_outs:
-        print grid_out
         result["results"].append({"filename": grid_out.filename,
                                   "title": grid_out.metadata["title"],
                                   "artist": grid_out.metadata["artist"],

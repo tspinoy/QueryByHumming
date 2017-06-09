@@ -28,9 +28,6 @@ $(function() {
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $('#uploadInformation').html("Something went wrong, please try again.");
-                    //console.log(xhr);
-                    //console.log(ajaxOptions);
-                    //console.log(thrownError);
                 }
             });
         }
