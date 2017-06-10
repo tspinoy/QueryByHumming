@@ -33,17 +33,11 @@ def add(midi_file, filename, title, artist):
     temp.read()
     midi = MidiFile(temp.name)
 
-    for i, track in enumerate(midi.tracks):
-        for msg in track:
-            print(msg)
-
     relevant_messages = representation.get_onset_and_note_messages(midi_file=midi)
     ioi = representation.ioi_ratio(ioi_array=representation.ioi(messages_array=relevant_messages))
     ioi = " ".join(map(str, ioi))
-    print ioi
     relative_notes = representation.relative_note(messages_array=relevant_messages)
     relative_notes = " ".join(map(str, relative_notes))
-    print relative_notes
 
     kwargs = {"filename": filename, "metadata": {"title": title,
                                                  "artist": artist,
@@ -62,14 +56,12 @@ def find_by_filename(filename):
     result = json.loads("{\"results\": []}")
 
     for grid_out in f:
-        print grid_out
         result["results"].append({"filename": grid_out.filename,
                                   "title": grid_out.metadata["title"],
                                   "artist": grid_out.metadata["artist"],
                                   "listen": "listen"})
 
     result = json.dumps(result)
-    print result
     return result
 
 
